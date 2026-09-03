@@ -1,0 +1,26 @@
+{
+  "name": "governed-runtime",
+  "version": "1.0.0",
+  "description": "Reference implementation of the Governed Runtime Standards: the Action Provenance Record, the Action Approval Attestation, and the Governed Runtime Profile. Verifiable records of what an AI agent did, and on whose authority.",
+  "license": "Apache-2.0",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": { "types": "./dist/index.d.ts", "import": "./dist/index.js" },
+    "./schema/action-provenance": "./schema/action-provenance-1.0.schema.json",
+    "./schema/action-approval": "./schema/action-approval-1.0.schema.json"
+  },
+  "files": ["dist", "schema", "specs", "README.md", "LICENSE"],
+  "engines": { "node": ">=18" },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run",
+    "prepublishOnly": "npm run typecheck && npm test && npm run build"
+  },
+  "keywords": ["ai", "agents", "provenance", "audit", "governance", "accountability", "ai-provenance", "action-provenance", "governed-runtime", "approval", "human-in-the-loop"],
+  "repository": { "type": "git", "url": "https://github.com/XiPlatform/governed-runtime-standards" },
+  "homepage": "https://renly.ai/standards",
+  "devDependencies": { "@types/node": "^24.0.0", "typescript": "^5.6.0", "vitest": "^3.0.0" }
+}

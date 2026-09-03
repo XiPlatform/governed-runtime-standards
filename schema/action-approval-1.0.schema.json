@@ -1,0 +1,82 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://renly.ai/spec/action-approval/1.0/schema.json",
+  "title": "Action Approval Attestation",
+  "description": "A verifiable statement that an identified approver permitted (or refused) a specific proposed action by an AI agent, bound to the exact proposal by digest, with a defined scope and constraints. Version 1.0.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["spec", "id", "correlationId", "proposal", "principal", "approver", "decision", "scope", "decidedAt"],
+  "properties": {
+    "spec": { "const": "action-approval/1.0" },
+    "id": { "type": "string", "minLength": 1, "maxLength": 256 },
+    "correlationId": { "type": "string", "minLength": 1, "maxLength": 256, "description": "The action or run this attestation authorises. Matches the correlationId of the resulting Action Provenance Record." },
+    "proposal": {
+      "type": "object", "additionalProperties": false,
+      "required": ["kind", "effect", "argsDigest"],
+      "properties": {
+        "kind": { "type": "string", "minLength": 1 },
+        "tool": { "type": "string" },
+        "target": { "type": "string" },
+        "effect": { "enum": ["read", "write"] },
+        "argsDigest": { "$ref": "#/$defs/digest", "description": "Digest of the exact arguments the approver saw. Execution with different arguments is not covered by this attestation." },
+        "summary": { "type": "string", "maxLength": 2000, "description": "The human-readable description shown to the approver." },
+        "presentedDigest": { "$ref": "#/$defs/digest", "description": "Digest of the full proposal as presented to the approver, when it contains more than the arguments." }
+      }
+    },
+    "principal": { "$ref": "#/$defs/party", "description": "Who requested the action." },
+    "approver": { "$ref": "#/$defs/party", "description": "Who decided. For decision auto, the policy engine as a service party." },
+    "decision": { "enum": ["approved", "rejected", "auto"] },
+    "scope": { "enum": ["single", "session", "standing"], "description": "single: this proposal once. session: matching proposals within the session. standing: matching proposals until revoked or expired." },
+    "constraints": {
+      "type": "object", "additionalProperties": false,
+      "properties": {
+        "expiresAt": { "$ref": "#/$defs/timestamp" },
+        "maxUses": { "type": "integer", "minimum": 1 },
+        "matchOn": { "type": "array", "items": { "type": "string" }, "description": "For session and standing scope: which proposal members must match for the grant to apply, for example tool, target." },
+        "conditions": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "decidedAt": { "$ref": "#/$defs/timestamp" },
+    "method": { "type": "string", "description": "ui, api, delegated, policy." },
+    "policy": {
+      "type": "object", "additionalProperties": false,
+      "properties": { "ref": { "type": "string" }, "version": { "type": "string" } }
+    },
+    "reason": { "type": "string", "maxLength": 2000 },
+    "revoked": {
+      "type": "object", "additionalProperties": false,
+      "required": ["at"],
+      "properties": { "at": { "$ref": "#/$defs/timestamp" }, "by": { "$ref": "#/$defs/party" }, "reason": { "type": "string" } }
+    },
+    "integrity": {
+      "type": "object", "additionalProperties": false,
+      "required": ["contentDigest"],
+      "properties": {
+        "contentDigest": { "$ref": "#/$defs/digest" },
+        "mac": { "$ref": "#/$defs/keyedProof" },
+        "signature": { "$ref": "#/$defs/keyedProof" },
+        "sealedAt": { "$ref": "#/$defs/timestamp" }
+      }
+    },
+    "extensions": { "type": "object", "additionalProperties": { "type": "object" } }
+  },
+  "$defs": {
+    "timestamp": { "type": "string", "format": "date-time" },
+    "digest": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" },
+    "party": {
+      "type": "object", "additionalProperties": false,
+      "required": ["id", "type"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "type": { "enum": ["human", "agent", "service", "system"] },
+        "display": { "type": "string" },
+        "tenant": { "type": "string" }
+      }
+    },
+    "keyedProof": {
+      "type": "object", "additionalProperties": false,
+      "required": ["alg", "keyId", "value"],
+      "properties": { "alg": { "type": "string" }, "keyId": { "type": "string", "minLength": 1 }, "value": { "type": "string", "minLength": 1 } }
+    }
+  }
+}

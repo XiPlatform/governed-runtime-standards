@@ -1,0 +1,18 @@
+{
+  "spec": "action-provenance/1.0",
+  "id": "5e6f7a8b-9c0d-4e1f-a2b3-c4d5e6f7a8b9",
+  "correlationId": "corr_01J9X3S4C6D8E0F2G4H6J8K0M2",
+  "recordedAt": "2026-09-02T03:25:51.330Z",
+  "action": { "kind": "chat_turn", "at": "2026-09-02T03:25:44.008Z", "effect": "read", "description": "Summarise open opportunities closing this quarter" },
+  "principal": { "id": "user_2f9a", "type": "human", "tenant": "org_acme" },
+  "agent": { "id": "agent_sales_analyst", "name": "Sales Analyst", "version": "4" },
+  "model": { "requested": "claude-opus-5", "resolved": "claude-opus-5", "provider": "anthropic" },
+  "policy": { "verdict": "allow", "ref": "pol_default_read", "version": "1" },
+  "approval": { "required": false, "decision": "not_required" },
+  "effects": [
+    { "tool": "salesforce.query", "target": "salesforce", "status": "succeeded", "sideEffecting": false, "argsDigest": "sha256:abababababababababababababababababababababababababababababababab" }
+  ],
+  "workProduct": { "outputDigest": "sha256:3333333333333333333333333333333333333333333333333333333333333333", "sources": ["salesforce:report/Q3-pipeline"] },
+  "cost": { "inputTokens": 5120, "outputTokens": 880, "attribution": "approximate" },
+  "outcome": { "status": "succeeded" }
+}

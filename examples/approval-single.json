@@ -1,0 +1,20 @@
+{
+  "spec": "action-approval/1.0",
+  "id": "att_01J9X3PZ9C4D6E8F0G2H4J6K8M",
+  "correlationId": "corr_01J9X3Q0Z8K7M2N5P4R6S7T8V9",
+  "proposal": {
+    "kind": "tool_call",
+    "tool": "outlook.send_email",
+    "target": "microsoft-outlook",
+    "effect": "write",
+    "argsDigest": "sha256:5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b",
+    "summary": "Send the August aged-receivables reminder to accounts@northwind.example (1 attachment, INV-0419)"
+  },
+  "principal": { "id": "user_2f9a", "type": "human", "display": "Sarah Chen", "tenant": "org_acme" },
+  "approver": { "id": "user_2f9a", "type": "human", "display": "Sarah Chen", "tenant": "org_acme" },
+  "decision": "approved",
+  "scope": "single",
+  "decidedAt": "2026-09-02T03:12:38.640Z",
+  "method": "ui",
+  "policy": { "ref": "pol_finance_outbound_email", "version": "3" }
+}
