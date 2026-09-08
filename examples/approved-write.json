@@ -1,0 +1,47 @@
+{
+  "spec": "action-provenance/1.0",
+  "id": "8d0f2c1e-6f8b-4a2c-9c3e-2b6f1a9d4e70",
+  "correlationId": "corr_01J9X3Q0Z8K7M2N5P4R6S7T8V9",
+  "recordedAt": "2026-09-02T03:12:41.902Z",
+  "action": { "kind": "tool_call", "at": "2026-09-02T03:12:39.117Z", "effect": "write", "description": "Send the August aged-receivables reminder to Northwind" },
+  "principal": { "id": "user_2f9a", "type": "human", "display": "Sarah Chen", "tenant": "org_acme" },
+  "agent": { "id": "agent_finance_ops", "name": "Finance Operations", "version": "7", "bundleDigest": "sha256:3b7f1c0d9a2e5f4b8c6d7e1a0f9b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b", "instructionsDigest": "sha256:9e1d2c3b4a5f6e7d8c9b0a1f2e3d4c5b6a7f8e9d0c1b2a3f4e5d6c7b8a9f0e1d" },
+  "model": { "requested": "gpt-5", "resolved": "gpt-5-2026-03-01", "provider": "azure-openai" },
+  "context": { "tenant": "org_acme", "workspace": "ws_finance", "session": "sess_7c2e", "execution": "exec_44a1" },
+  "policy": {
+    "verdict": "allow",
+    "ref": "pol_finance_outbound_email",
+    "version": "3",
+    "evaluations": [
+      { "evaluator": "gate", "decision": "allow", "code": "OK" },
+      { "evaluator": "agr", "decision": "allow", "confidence": 0.94, "reasons": ["recipient is an existing customer", "amount below escalation threshold"] }
+    ]
+  },
+  "approval": {
+    "required": true,
+    "decision": "approved",
+    "approver": { "id": "user_2f9a", "type": "human", "display": "Sarah Chen" },
+    "at": "2026-09-02T03:12:38.640Z",
+    "method": "ui",
+    "attestation": "att_01J9X3PZ9C4D6E8F0G2H4J6K8M"
+  },
+  "effects": [
+    {
+      "tool": "outlook.send_email",
+      "target": "microsoft-outlook",
+      "status": "succeeded",
+      "sideEffecting": true,
+      "argsDigest": "sha256:5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b",
+      "responseDigest": "sha256:c0ffee0000000000000000000000000000000000000000000000000000000001",
+      "resultRef": "AAMkAGI2NGVhZTVlLTI5ZmQtNDU4NC1iN2Q2LTRiN2M5NTY4ZmY0YQBGAAAAAAB",
+      "approvedBy": { "id": "user_2f9a", "type": "human" }
+    }
+  ],
+  "workProduct": {
+    "inputDigest": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+    "outputDigest": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+    "sources": ["xero:invoice/INV-0419", "xero:contact/northwind"]
+  },
+  "cost": { "inputTokens": 2381, "outputTokens": 412, "estimatedUsd": 0.0143, "attribution": "exact" },
+  "outcome": { "status": "succeeded" }
+}

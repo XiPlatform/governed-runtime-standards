@@ -1,0 +1,27 @@
+{
+  "spec": "action-approval/1.0",
+  "id": "att_01J9X4A0B2C4D6E8F0G2H4J6K8",
+  "correlationId": "sess_7c2e",
+  "proposal": {
+    "kind": "tool_call",
+    "tool": "xero.create_invoice_draft",
+    "target": "xero",
+    "effect": "write",
+    "argsDigest": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+    "summary": "Always allow this agent to create draft invoices in Xero for this session"
+  },
+  "principal": { "id": "user_2f9a", "type": "human", "tenant": "org_acme" },
+  "approver": { "id": "user_2f9a", "type": "human", "display": "Sarah Chen", "tenant": "org_acme" },
+  "decision": "approved",
+  "scope": "standing",
+  "constraints": {
+    "matchOn": ["tool", "target", "effect"],
+    "expiresAt": "2026-09-02T11:12:38.640Z",
+    "maxUses": 50,
+    "conditions": ["drafts only; publishing an invoice still requires single approval"]
+  },
+  "decidedAt": "2026-09-02T03:12:38.640Z",
+  "method": "ui",
+  "policy": { "ref": "pol_finance_xero_drafts", "version": "2" },
+  "reason": "Month-end run: batch of draft invoices for review"
+}

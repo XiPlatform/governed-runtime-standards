@@ -1,0 +1,21 @@
+{
+  "spec": "action-provenance/1.0",
+  "id": "c4b1a9e2-0d3f-4e5a-8b7c-6d5e4f3a2b1c",
+  "correlationId": "corr_01J9X3R2A4B6C8D0E2F4G6H8J0",
+  "recordedAt": "2026-09-02T03:20:07.004Z",
+  "action": { "kind": "tool_call", "at": "2026-09-02T03:20:06.210Z", "effect": "write", "description": "Bulk-delete 1,240 contact records" },
+  "principal": { "id": "user_9b11", "type": "human", "display": "Contractor account", "tenant": "org_acme" },
+  "agent": { "id": "agent_crm_cleanup", "name": "CRM Cleanup", "version": "2" },
+  "model": { "requested": "gpt-5", "resolved": "gpt-5-2026-03-01", "provider": "azure-openai" },
+  "context": { "tenant": "org_acme", "workspace": "ws_sales" },
+  "policy": {
+    "verdict": "deny",
+    "ref": "pol_destructive_bulk_ops",
+    "version": "1",
+    "evaluations": [
+      { "evaluator": "gate", "decision": "deny", "code": "BULK_DELETE_THRESHOLD", "reasons": ["bulk deletion above 100 records requires an administrator"] }
+    ]
+  },
+  "effects": [],
+  "outcome": { "status": "denied", "error": "Blocked by policy pol_destructive_bulk_ops" }
+}

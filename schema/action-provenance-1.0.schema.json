@@ -1,0 +1,193 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://renly.ai/spec/action-provenance/1.0/schema.json",
+  "title": "Action Provenance Record",
+  "description": "A verifiable record of one action taken by or through an AI agent: who requested it, which agent and model acted, what policy decided, who approved it, what it did, and what happened. Version 1.0.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["spec", "id", "correlationId", "recordedAt", "action", "principal", "model", "outcome"],
+  "properties": {
+    "spec": { "const": "action-provenance/1.0" },
+    "id": { "type": "string", "minLength": 1, "maxLength": 256, "description": "Unique record identifier. UUID recommended." },
+    "correlationId": { "type": "string", "minLength": 1, "maxLength": 256, "description": "Groups every record that belongs to one action or agent run." },
+    "recordedAt": { "$ref": "#/$defs/timestamp" },
+    "action": {
+      "type": "object", "additionalProperties": false,
+      "required": ["kind", "at", "effect"],
+      "properties": {
+        "kind": { "type": "string", "minLength": 1, "description": "Registered values: chat_turn, agent_invocation, workflow_step, tool_call, agent_formation, subagent_spawn, runtime_action. Extensions use an x- prefix." },
+        "at": { "$ref": "#/$defs/timestamp" },
+        "effect": { "enum": ["none", "read", "write"] },
+        "description": { "type": "string", "maxLength": 2000 }
+      }
+    },
+    "principal": { "$ref": "#/$defs/party", "description": "The party the action is attributed to: the human or system that requested it." },
+    "agent": {
+      "type": "object", "additionalProperties": false,
+      "required": ["id"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "name": { "type": "string" },
+        "version": { "type": "string" },
+        "bundleDigest": { "$ref": "#/$defs/digest", "description": "Digest of the exact agent definition that acted (instructions, tools, configuration)." },
+        "instructionsDigest": { "$ref": "#/$defs/digest", "description": "Digest of the resolved instructions or system prompt." }
+      }
+    },
+    "model": {
+      "type": "object", "additionalProperties": false,
+      "required": ["resolved", "provider"],
+      "properties": {
+        "requested": { "type": "string" },
+        "resolved": { "type": "string", "minLength": 1, "description": "The model that actually produced the output, or none when no model was invoked." },
+        "provider": { "type": "string", "minLength": 1, "description": "Model provider identifier, for example azure-openai, openai, anthropic, google, none." },
+        "mode": { "type": "string", "description": "Provider-specific mode or routing label." }
+      }
+    },
+    "context": {
+      "type": "object", "additionalProperties": false,
+      "properties": {
+        "tenant": { "type": "string" },
+        "workspace": { "type": "string" },
+        "session": { "type": "string" },
+        "execution": { "type": "string" },
+        "step": { "type": "string" }
+      }
+    },
+    "policy": {
+      "type": "object", "additionalProperties": false,
+      "required": ["verdict"],
+      "properties": {
+        "verdict": { "enum": ["allow", "allow_with_obligations", "deny", "escalate"] },
+        "ref": { "type": "string", "description": "Identifier of the governing policy." },
+        "version": { "type": "string" },
+        "obligations": { "type": "array", "items": { "type": "string" } },
+        "evaluations": {
+          "type": "array",
+          "items": {
+            "type": "object", "additionalProperties": false,
+            "required": ["evaluator", "decision"],
+            "properties": {
+              "evaluator": { "type": "string" },
+              "decision": { "type": "string" },
+              "code": { "type": "string" },
+              "confidence": { "type": "number", "minimum": 0, "maximum": 1 },
+              "reasons": { "type": "array", "items": { "type": "string" } }
+            }
+          }
+        }
+      }
+    },
+    "approval": {
+      "type": "object", "additionalProperties": false,
+      "required": ["required", "decision"],
+      "properties": {
+        "required": { "type": "boolean" },
+        "decision": { "enum": ["approved", "rejected", "auto", "not_required", "expired"] },
+        "approver": { "$ref": "#/$defs/party" },
+        "at": { "$ref": "#/$defs/timestamp" },
+        "method": { "type": "string", "description": "How approval was given: ui, api, delegated, policy." },
+        "attestation": { "type": "string", "description": "Identifier or content digest of the Action Approval Attestation that authorised this action." }
+      }
+    },
+    "effects": {
+      "type": "array",
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["tool", "status", "sideEffecting"],
+        "properties": {
+          "tool": { "type": "string", "minLength": 1 },
+          "target": { "type": "string", "description": "The external system acted on, for example microsoft-outlook, xero, azure-devops." },
+          "status": { "enum": ["succeeded", "failed"] },
+          "sideEffecting": { "type": "boolean" },
+          "argsDigest": { "$ref": "#/$defs/digest" },
+          "responseDigest": { "$ref": "#/$defs/digest", "description": "Digest of the response observed from the target system." },
+          "resultRef": { "type": "string", "description": "Reference to the created or changed object in the target system." },
+          "approvedBy": { "$ref": "#/$defs/party" },
+          "compensated": { "type": "boolean" },
+          "error": { "type": "string" }
+        }
+      }
+    },
+    "workProduct": {
+      "type": "object", "additionalProperties": false,
+      "properties": {
+        "inputDigest": { "$ref": "#/$defs/digest" },
+        "outputDigest": { "$ref": "#/$defs/digest" },
+        "sources": { "type": "array", "items": { "type": "string" } },
+        "artifacts": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "cost": {
+      "type": "object", "additionalProperties": false,
+      "required": ["attribution"],
+      "properties": {
+        "inputTokens": { "type": "integer", "minimum": 0 },
+        "outputTokens": { "type": "integer", "minimum": 0 },
+        "estimatedUsd": { "type": "number", "minimum": 0 },
+        "attribution": { "enum": ["exact", "approximate", "none"] }
+      }
+    },
+    "outcome": {
+      "type": "object", "additionalProperties": false,
+      "required": ["status"],
+      "properties": {
+        "status": { "enum": ["succeeded", "failed", "blocked", "denied", "cancelled", "timed_out"] },
+        "error": { "type": "string" }
+      }
+    },
+    "integrity": { "$ref": "#/$defs/integrity" },
+    "extensions": {
+      "type": "object",
+      "description": "Vendor extensions keyed by reverse-DNS namespace, for example ai.renly.",
+      "additionalProperties": { "type": "object" }
+    }
+  },
+  "$defs": {
+    "timestamp": { "type": "string", "format": "date-time", "description": "RFC 3339 timestamp in UTC." },
+    "digest": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" },
+    "party": {
+      "type": "object", "additionalProperties": false,
+      "required": ["id", "type"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "type": { "enum": ["human", "agent", "service", "system"] },
+        "display": { "type": "string" },
+        "tenant": { "type": "string" },
+        "onBehalfOf": {
+          "type": "object", "additionalProperties": false,
+          "required": ["id", "type"],
+          "properties": { "id": { "type": "string" }, "type": { "enum": ["human", "agent", "service", "system"] } }
+        }
+      }
+    },
+    "keyedProof": {
+      "type": "object", "additionalProperties": false,
+      "required": ["alg", "keyId", "value"],
+      "properties": {
+        "alg": { "type": "string", "description": "hmac-sha256 for a MAC; ed25519 or es256 for a signature." },
+        "keyId": { "type": "string", "minLength": 1 },
+        "value": { "type": "string", "minLength": 1, "description": "base64url, no padding." }
+      }
+    },
+    "integrity": {
+      "type": "object", "additionalProperties": false,
+      "required": ["contentDigest"],
+      "properties": {
+        "contentDigest": { "$ref": "#/$defs/digest", "description": "Digest of the canonical document with the integrity member removed." },
+        "mac": { "$ref": "#/$defs/keyedProof" },
+        "signature": { "$ref": "#/$defs/keyedProof" },
+        "chain": {
+          "type": "object", "additionalProperties": false,
+          "required": ["scope", "seq", "prev", "link"],
+          "properties": {
+            "scope": { "type": "string", "description": "The chain the record belongs to, normally the tenant." },
+            "seq": { "type": "integer", "minimum": 0 },
+            "prev": { "oneOf": [ { "$ref": "#/$defs/digest" }, { "type": "null" } ] },
+            "link": { "$ref": "#/$defs/keyedProof" }
+          }
+        },
+        "sealedAt": { "$ref": "#/$defs/timestamp" }
+      }
+    }
+  }
+}
