@@ -26,12 +26,16 @@ These standards fill the gap in the middle, in a form a small team can implement
 
 ## Reference implementation
 
+A zero-dependency TypeScript implementation of all three specifications lives in [`src/`](src), with the conformance tests in [`test/`](test). There is nothing to install from a package registry: clone the repository, or copy the files you need into your own tree.
+
 ```bash
-npm install governed-runtime
+git clone https://github.com/XiPlatform/governed-runtime-standards.git
+cd governed-runtime-standards
+npm install && npm test
 ```
 
 ```ts
-import { createRecord, validate, seal, verify, verifyChain } from 'governed-runtime';
+import { createRecord, validate, seal, verify, verifyChain } from './src/index.js';
 
 const record = createRecord({
   correlationId: 'corr_123',
@@ -54,7 +58,7 @@ verify(sealed, process.env.EVIDENCE_SECRET!);       // { valid: true }
 Approvals:
 
 ```ts
-import { createAttestation, sealAttestation, covers } from 'governed-runtime';
+import { createAttestation, sealAttestation, covers } from './src/index.js';
 
 const grant = sealAttestation(createAttestation({
   correlationId: 'corr_123',
