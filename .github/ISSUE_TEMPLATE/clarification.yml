@@ -1,0 +1,47 @@
+name: Clarification request
+description: The text is ambiguous, or you are unsure how a rule applies to a case.
+title: "[Clarification] "
+labels: ["clarification"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this form when the specification text could be read more than one way, or when you are unsure how a rule applies. If the text is wrong rather than unclear, use the erratum form instead. Do not report security vulnerabilities here; see SECURITY.md.
+  - type: dropdown
+    id: spec
+    attributes:
+      label: Specification
+      options:
+        - Action Provenance Record (action-provenance/1.0)
+        - Action Approval Attestation (action-approval/1.0)
+        - Governed Runtime Profile (governed-runtime/1.0)
+        - JSON Schema
+        - Test vectors
+        - More than one
+    validations:
+      required: true
+  - type: input
+    id: section
+    attributes:
+      label: Section
+      description: Section number and title, for example "6.4 Chain".
+    validations:
+      required: true
+  - type: textarea
+    id: question
+    attributes:
+      label: Question
+      description: What is unclear? Quote the text and describe the readings you see.
+    validations:
+      required: true
+  - type: textarea
+    id: example
+    attributes:
+      label: Example
+      description: A minimal document, proposal or scenario that shows the ambiguity, if you have one.
+      render: json
+  - type: textarea
+    id: suggestion
+    attributes:
+      label: Suggested wording
+      description: Optional. Text that would resolve the ambiguity.

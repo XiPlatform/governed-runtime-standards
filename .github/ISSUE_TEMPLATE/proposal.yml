@@ -1,0 +1,55 @@
+name: Proposal for a future version
+description: Propose a new member, value, feature or guarantee, or a change that version 1.0 cannot accept.
+title: "[Proposal] "
+labels: ["proposal"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Version 1.0 of each specification is frozen except for errata and clarifications, so proposals are considered for a later minor or major version. Please describe the problem first; the solution can change in discussion. See GOVERNANCE.md for the versioning policy.
+  - type: dropdown
+    id: spec
+    attributes:
+      label: Specification
+      options:
+        - Action Provenance Record
+        - Action Approval Attestation
+        - Governed Runtime Profile
+        - More than one
+        - A new specification
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What can implementers, reviewers or users not do today, and why does it matter?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed change
+      description: New or changed members, values, rules or guarantees. Include an example document where relevant.
+    validations:
+      required: true
+  - type: dropdown
+    id: compatibility
+    attributes:
+      label: Compatibility
+      options:
+        - "Additive: OPTIONAL members or new registered values only (minor version)"
+        - "Breaking: changes REQUIRED members, algorithms or levels (major version)"
+        - Not sure
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: Including using the extensions member or an x- value instead.
+  - type: textarea
+    id: experience
+    attributes:
+      label: Implementation experience
+      description: Optional. Have you implemented or prototyped this? Links are welcome.

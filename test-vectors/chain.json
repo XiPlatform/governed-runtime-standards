@@ -1,0 +1,1429 @@
+{
+  "title": "Per-scope chains",
+  "specs": [
+    "action-provenance/1.0"
+  ],
+  "generator": "governed-runtime 1.0.0 reference implementation, scripts/generate-test-vectors.mjs",
+  "notes": [
+    "Records are sealed with the test key from seal-and-verify.json.",
+    "linkMessage is contentDigest, a full stop, and prev or the literal GENESIS. link.value is the base64url encoding, without padding, of HMAC-SHA256(key, linkMessage).",
+    "In chainCases, ok and brokenAtSeq are normative: a verifier reports the first failing sequence number. verified and reason are reference implementation results and are informative."
+  ],
+  "key": {
+    "keyId": "test-vector-key-1",
+    "secret": "GRS-TEST-VECTOR-KEY-1.0-NOT-A-SECRET",
+    "secretUtf8Hex": "4752532d544553542d564543544f522d4b45592d312e302d4e4f542d412d534543524554"
+  },
+  "scope": "tenant_example",
+  "vectors": [
+    {
+      "seq": 0,
+      "document": {
+        "spec": "action-provenance/1.0",
+        "id": "chain-record-0",
+        "correlationId": "corr_chain_0",
+        "recordedAt": "2026-09-02T03:00:30.000Z",
+        "action": {
+          "kind": "chat_turn",
+          "at": "2026-09-02T03:00:00.000Z",
+          "effect": "none"
+        },
+        "principal": {
+          "id": "user_1",
+          "type": "human",
+          "tenant": "tenant_example"
+        },
+        "model": {
+          "resolved": "none",
+          "provider": "none"
+        },
+        "policy": {
+          "verdict": "allow",
+          "ref": "pol_default",
+          "version": "1"
+        },
+        "outcome": {
+          "status": "succeeded"
+        }
+      },
+      "contentDigest": "sha256:09adb5fdef289391fdab8eb4b64cd77f232733727ba4cb0791b0fc273948fede",
+      "prev": null,
+      "linkMessage": "sha256:09adb5fdef289391fdab8eb4b64cd77f232733727ba4cb0791b0fc273948fede.GENESIS",
+      "link": {
+        "alg": "hmac-sha256",
+        "keyId": "test-vector-key-1",
+        "value": "rVgGcI5la47cZGwEmtCbrYQp_rpuadcls_0dQNqQtsI"
+      },
+      "mac": {
+        "alg": "hmac-sha256",
+        "keyId": "test-vector-key-1",
+        "value": "gaBDZo94ZM09OBoiRkH51vxCw2MzJUZ391B7RR3KN0c"
+      },
+      "sealed": {
+        "spec": "action-provenance/1.0",
+        "id": "chain-record-0",
+        "correlationId": "corr_chain_0",
+        "recordedAt": "2026-09-02T03:00:30.000Z",
+        "action": {
+          "kind": "chat_turn",
+          "at": "2026-09-02T03:00:00.000Z",
+          "effect": "none"
+        },
+        "principal": {
+          "id": "user_1",
+          "type": "human",
+          "tenant": "tenant_example"
+        },
+        "model": {
+          "resolved": "none",
+          "provider": "none"
+        },
+        "policy": {
+          "verdict": "allow",
+          "ref": "pol_default",
+          "version": "1"
+        },
+        "outcome": {
+          "status": "succeeded"
+        },
+        "integrity": {
+          "contentDigest": "sha256:09adb5fdef289391fdab8eb4b64cd77f232733727ba4cb0791b0fc273948fede",
+          "mac": {
+            "alg": "hmac-sha256",
+            "keyId": "test-vector-key-1",
+            "value": "gaBDZo94ZM09OBoiRkH51vxCw2MzJUZ391B7RR3KN0c"
+          },
+          "chain": {
+            "scope": "tenant_example",
+            "seq": 0,
+            "prev": null,
+            "link": {
+              "alg": "hmac-sha256",
+              "keyId": "test-vector-key-1",
+              "value": "rVgGcI5la47cZGwEmtCbrYQp_rpuadcls_0dQNqQtsI"
+            }
+          },
+          "sealedAt": "2026-09-02T04:00:00.000Z"
+        }
+      }
+    },
+    {
+      "seq": 1,
+      "document": {
+        "spec": "action-provenance/1.0",
+        "id": "chain-record-1",
+        "correlationId": "corr_chain_1",
+        "recordedAt": "2026-09-02T03:01:30.000Z",
+        "action": {
+          "kind": "tool_call",
+          "at": "2026-09-02T03:01:00.000Z",
+          "effect": "read"
+        },
+        "principal": {
+          "id": "user_1",
+          "type": "human",
+          "tenant": "tenant_example"
+        },
+        "model": {
+          "resolved": "none",
+          "provider": "none"
+        },
+        "policy": {
+          "verdict": "allow",
+          "ref": "pol_default",
+          "version": "1"
+        },
+        "outcome": {
+          "status": "succeeded"
+        }
+      },
+      "contentDigest": "sha256:a6ffe6da7a48159f86aa819785b12bfed9d7e28f04f00b868410561f638bbcac",
+      "prev": "sha256:09adb5fdef289391fdab8eb4b64cd77f232733727ba4cb0791b0fc273948fede",
+      "linkMessage": "sha256:a6ffe6da7a48159f86aa819785b12bfed9d7e28f04f00b868410561f638bbcac.sha256:09adb5fdef289391fdab8eb4b64cd77f232733727ba4cb0791b0fc273948fede",
+      "link": {
+        "alg": "hmac-sha256",
+        "keyId": "test-vector-key-1",
+        "value": "2XigFOJkfeb9x2zT9YUxRkuTN1pk2tj37RgCCYlhEUk"
+      },
+      "mac": {
+        "alg": "hmac-sha256",
+        "keyId": "test-vector-key-1",
+        "value": "C1wEErImxnWsZWUBv_yaGYFP5mOb2AYJj4gYeAAHTIU"
+      },
+      "sealed": {
+        "spec": "action-provenance/1.0",
+        "id": "chain-record-1",
+        "correlationId": "corr_chain_1",
+        "recordedAt": "2026-09-02T03:01:30.000Z",
+        "action": {
+          "kind": "tool_call",
+          "at": "2026-09-02T03:01:00.000Z",
+          "effect": "read"
+        },
+        "principal": {
+          "id": "user_1",
+          "type": "human",
+          "tenant": "tenant_example"
+        },
+        "model": {
+          "resolved": "none",
+          "provider": "none"
+        },
+        "policy": {
+          "verdict": "allow",
+          "ref": "pol_default",
+          "version": "1"
+        },
+        "outcome": {
+          "status": "succeeded"
+        },
+        "integrity": {
+          "contentDigest": "sha256:a6ffe6da7a48159f86aa819785b12bfed9d7e28f04f00b868410561f638bbcac",
+          "mac": {
+            "alg": "hmac-sha256",
+            "keyId": "test-vector-key-1",
+            "value": "C1wEErImxnWsZWUBv_yaGYFP5mOb2AYJj4gYeAAHTIU"
+          },
+          "chain": {
+            "scope": "tenant_example",
+            "seq": 1,
+            "prev": "sha256:09adb5fdef289391fdab8eb4b64cd77f232733727ba4cb0791b0fc273948fede",
+            "link": {
+              "alg": "hmac-sha256",
+              "keyId": "test-vector-key-1",
+              "value": "2XigFOJkfeb9x2zT9YUxRkuTN1pk2tj37RgCCYlhEUk"
+            }
+          },
+          "sealedAt": "2026-09-02T04:00:00.000Z"
+        }
+      }
+    },
+    {
+      "seq": 2,
+      "document": {
+        "spec": "action-provenance/1.0",
+        "id": "chain-record-2",
+        "correlationId": "corr_chain_2",
+        "recordedAt": "2026-09-02T03:02:30.000Z",
+        "action": {
+          "kind": "tool_call",
+          "at": "2026-09-02T03:02:00.000Z",
+          "effect": "write"
+        },
+        "principal": {
+          "id": "user_1",
+          "type": "human",
+          "tenant": "tenant_example"
+        },
+        "model": {
+          "resolved": "none",
+          "provider": "none"
+        },
+        "policy": {
+          "verdict": "deny",
+          "ref": "pol_default",
+          "version": "1"
+        },
+        "outcome": {
+          "status": "denied"
+        }
+      },
+      "contentDigest": "sha256:1b910c3cdc2965c48cdf0c10453b181bc6c81f019b54414a234440182fe09892",
+      "prev": "sha256:a6ffe6da7a48159f86aa819785b12bfed9d7e28f04f00b868410561f638bbcac",
+      "linkMessage": "sha256:1b910c3cdc2965c48cdf0c10453b181bc6c81f019b54414a234440182fe09892.sha256:a6ffe6da7a48159f86aa819785b12bfed9d7e28f04f00b868410561f638bbcac",
+      "link": {
+        "alg": "hmac-sha256",
+        "keyId": "test-vector-key-1",
+        "value": "PESsEBv7qWKhAUJaH96AvSHt3iG_3Oy-50w7muOAzi8"
+      },
+      "mac": {
+        "alg": "hmac-sha256",
+        "keyId": "test-vector-key-1",
+        "value": "Ok94ecHZHUlu-IBbVTwKLoI35GkuCQgQpKzOYMzMlNs"
+      },
+      "sealed": {
+        "spec": "action-provenance/1.0",
+        "id": "chain-record-2",
+        "correlationId": "corr_chain_2",
+        "recordedAt": "2026-09-02T03:02:30.000Z",
+        "action": {
+          "kind": "tool_call",
+          "at": "2026-09-02T03:02:00.000Z",
+          "effect": "write"
+        },
+        "principal": {
+          "id": "user_1",
+          "type": "human",
+          "tenant": "tenant_example"
+        },
+        "model": {
+          "resolved": "none",
+          "provider": "none"
+        },
+        "policy": {
+          "verdict": "deny",
+          "ref": "pol_default",
+          "version": "1"
+        },
+        "outcome": {
+          "status": "denied"
+        },
+        "integrity": {
+          "contentDigest": "sha256:1b910c3cdc2965c48cdf0c10453b181bc6c81f019b54414a234440182fe09892",
+          "mac": {
+            "alg": "hmac-sha256",
+            "keyId": "test-vector-key-1",
+            "value": "Ok94ecHZHUlu-IBbVTwKLoI35GkuCQgQpKzOYMzMlNs"
+          },
+          "chain": {
+            "scope": "tenant_example",
+            "seq": 2,
+            "prev": "sha256:a6ffe6da7a48159f86aa819785b12bfed9d7e28f04f00b868410561f638bbcac",
+            "link": {
+              "alg": "hmac-sha256",
+              "keyId": "test-vector-key-1",
+              "value": "PESsEBv7qWKhAUJaH96AvSHt3iG_3Oy-50w7muOAzi8"
+            }
+          },
+          "sealedAt": "2026-09-02T04:00:00.000Z"
+        }
+      }
+    }
+  ],
+  "chainCases": [
+    {
+      "name": "intact",
+      "description": "Three records in order from genesis.",
+      "scope": "tenant_example",
+      "records": [
+        {
+          "spec": "action-provenance/1.0",
+          "id": "chain-record-0",
+          "correlationId": "corr_chain_0",
+          "recordedAt": "2026-09-02T03:00:30.000Z",
+          "action": {
+            "kind": "chat_turn",
+            "at": "2026-09-02T03:00:00.000Z",
+            "effect": "none"
+          },
+          "principal": {
+            "id": "user_1",
+            "type": "human",
+            "tenant": "tenant_example"
+          },
+          "model": {
+            "resolved": "none",
+            "provider": "none"
+          },
+          "policy": {
+            "verdict": "allow",
+            "ref": "pol_default",
+            "version": "1"
+          },
+          "outcome": {
+            "status": "succeeded"
+          },
+          "integrity": {
+            "contentDigest": "sha256:09adb5fdef289391fdab8eb4b64cd77f232733727ba4cb0791b0fc273948fede",
+            "mac": {
+              "alg": "hmac-sha256",
+              "keyId": "test-vector-key-1",
+              "value": "gaBDZo94ZM09OBoiRkH51vxCw2MzJUZ391B7RR3KN0c"
+            },
+            "chain": {
+              "scope": "tenant_example",
+              "seq": 0,
+              "prev": null,
+              "link": {
+                "alg": "hmac-sha256",
+                "keyId": "test-vector-key-1",
+                "value": "rVgGcI5la47cZGwEmtCbrYQp_rpuadcls_0dQNqQtsI"
+              }
+            },
+            "sealedAt": "2026-09-02T04:00:00.000Z"
+          }
+        },
+        {
+          "spec": "action-provenance/1.0",
+          "id": "chain-record-1",
+          "correlationId": "corr_chain_1",
+          "recordedAt": "2026-09-02T03:01:30.000Z",
+          "action": {
+            "kind": "tool_call",
+            "at": "2026-09-02T03:01:00.000Z",
+            "effect": "read"
+          },
+          "principal": {
+            "id": "user_1",
+            "type": "human",
+            "tenant": "tenant_example"
+          },
+          "model": {
+            "resolved": "none",
+            "provider": "none"
+          },
+          "policy": {
+            "verdict": "allow",
+            "ref": "pol_default",
+            "version": "1"
+          },
+          "outcome": {
+            "status": "succeeded"
+          },
+          "integrity": {
+            "contentDigest": "sha256:a6ffe6da7a48159f86aa819785b12bfed9d7e28f04f00b868410561f638bbcac",
+            "mac": {
+              "alg": "hmac-sha256",
+              "keyId": "test-vector-key-1",
+              "value": "C1wEErImxnWsZWUBv_yaGYFP5mOb2AYJj4gYeAAHTIU"
+            },
+            "chain": {
+              "scope": "tenant_example",
+              "seq": 1,
+              "prev": "sha256:09adb5fdef289391fdab8eb4b64cd77f232733727ba4cb0791b0fc273948fede",
+              "link": {
+                "alg": "hmac-sha256",
+                "keyId": "test-vector-key-1",
+                "value": "2XigFOJkfeb9x2zT9YUxRkuTN1pk2tj37RgCCYlhEUk"
+              }
+            },
+            "sealedAt": "2026-09-02T04:00:00.000Z"
+          }
+        },
+        {
+          "spec": "action-provenance/1.0",
+          "id": "chain-record-2",
+          "correlationId": "corr_chain_2",
+          "recordedAt": "2026-09-02T03:02:30.000Z",
+          "action": {
+            "kind": "tool_call",
+            "at": "2026-09-02T03:02:00.000Z",
+            "effect": "write"
+          },
+          "principal": {
+            "id": "user_1",
+            "type": "human",
+            "tenant": "tenant_example"
+          },
+          "model": {
+            "resolved": "none",
+            "provider": "none"
+          },
+          "policy": {
+            "verdict": "deny",
+            "ref": "pol_default",
+            "version": "1"
+          },
+          "outcome": {
+            "status": "denied"
+          },
+          "integrity": {
+            "contentDigest": "sha256:1b910c3cdc2965c48cdf0c10453b181bc6c81f019b54414a234440182fe09892",
+            "mac": {
+              "alg": "hmac-sha256",
+              "keyId": "test-vector-key-1",
+              "value": "Ok94ecHZHUlu-IBbVTwKLoI35GkuCQgQpKzOYMzMlNs"
+            },
+            "chain": {
+              "scope": "tenant_example",
+              "seq": 2,
+              "prev": "sha256:a6ffe6da7a48159f86aa819785b12bfed9d7e28f04f00b868410561f638bbcac",
+              "link": {
+                "alg": "hmac-sha256",
+                "keyId": "test-vector-key-1",
+                "value": "PESsEBv7qWKhAUJaH96AvSHt3iG_3Oy-50w7muOAzi8"
+              }
+            },
+            "sealedAt": "2026-09-02T04:00:00.000Z"
+          }
+        }
+      ],
+      "expected": {
+        "ok": true,
+        "verified": 3
+      }
+    },
+    {
+      "name": "segment",
+      "description": "A contiguous segment that starts after genesis, as in an export for one day. The first record's prev cannot be checked without its predecessor.",
+      "scope": "tenant_example",
+      "records": [
+        {
+          "spec": "action-provenance/1.0",
+          "id": "chain-record-1",
+          "correlationId": "corr_chain_1",
+          "recordedAt": "2026-09-02T03:01:30.000Z",
+          "action": {
+            "kind": "tool_call",
+            "at": "2026-09-02T03:01:00.000Z",
+            "effect": "read"
+          },
+          "principal": {
+            "id": "user_1",
+            "type": "human",
+            "tenant": "tenant_example"
+          },
+          "model": {
+            "resolved": "none",
+            "provider": "none"
+          },
+          "policy": {
+            "verdict": "allow",
+            "ref": "pol_default",
+            "version": "1"
+          },
+          "outcome": {
+            "status": "succeeded"
+          },
+          "integrity": {
+            "contentDigest": "sha256:a6ffe6da7a48159f86aa819785b12bfed9d7e28f04f00b868410561f638bbcac",
+            "mac": {
+              "alg": "hmac-sha256",
+              "keyId": "test-vector-key-1",
+              "value": "C1wEErImxnWsZWUBv_yaGYFP5mOb2AYJj4gYeAAHTIU"
+            },
+            "chain": {
+              "scope": "tenant_example",
+              "seq": 1,
+              "prev": "sha256:09adb5fdef289391fdab8eb4b64cd77f232733727ba4cb0791b0fc273948fede",
+              "link": {
+                "alg": "hmac-sha256",
+                "keyId": "test-vector-key-1",
+                "value": "2XigFOJkfeb9x2zT9YUxRkuTN1pk2tj37RgCCYlhEUk"
+              }
+            },
+            "sealedAt": "2026-09-02T04:00:00.000Z"
+          }
+        },
+        {
+          "spec": "action-provenance/1.0",
+          "id": "chain-record-2",
+          "correlationId": "corr_chain_2",
+          "recordedAt": "2026-09-02T03:02:30.000Z",
+          "action": {
+            "kind": "tool_call",
+            "at": "2026-09-02T03:02:00.000Z",
+            "effect": "write"
+          },
+          "principal": {
+            "id": "user_1",
+            "type": "human",
+            "tenant": "tenant_example"
+          },
+          "model": {
+            "resolved": "none",
+            "provider": "none"
+          },
+          "policy": {
+            "verdict": "deny",
+            "ref": "pol_default",
+            "version": "1"
+          },
+          "outcome": {
+            "status": "denied"
+          },
+          "integrity": {
+            "contentDigest": "sha256:1b910c3cdc2965c48cdf0c10453b181bc6c81f019b54414a234440182fe09892",
+            "mac": {
+              "alg": "hmac-sha256",
+              "keyId": "test-vector-key-1",
+              "value": "Ok94ecHZHUlu-IBbVTwKLoI35GkuCQgQpKzOYMzMlNs"
+            },
+            "chain": {
+              "scope": "tenant_example",
+              "seq": 2,
+              "prev": "sha256:a6ffe6da7a48159f86aa819785b12bfed9d7e28f04f00b868410561f638bbcac",
+              "link": {
+                "alg": "hmac-sha256",
+                "keyId": "test-vector-key-1",
+                "value": "PESsEBv7qWKhAUJaH96AvSHt3iG_3Oy-50w7muOAzi8"
+              }
+            },
+            "sealedAt": "2026-09-02T04:00:00.000Z"
+          }
+        }
+      ],
+      "expected": {
+        "ok": true,
+        "verified": 2
+      }
+    },
+    {
+      "name": "gap",
+      "description": "The record at seq 1 is missing.",
+      "scope": "tenant_example",
+      "records": [
+        {
+          "spec": "action-provenance/1.0",
+          "id": "chain-record-0",
+          "correlationId": "corr_chain_0",
+          "recordedAt": "2026-09-02T03:00:30.000Z",
+          "action": {
+            "kind": "chat_turn",
+            "at": "2026-09-02T03:00:00.000Z",
+            "effect": "none"
+          },
+          "principal": {
+            "id": "user_1",
+            "type": "human",
+            "tenant": "tenant_example"
+          },
+          "model": {
+            "resolved": "none",
+            "provider": "none"
+          },
+          "policy": {
+            "verdict": "allow",
+            "ref": "pol_default",
+            "version": "1"
+          },
+          "outcome": {
+            "status": "succeeded"
+          },
+          "integrity": {
+            "contentDigest": "sha256:09adb5fdef289391fdab8eb4b64cd77f232733727ba4cb0791b0fc273948fede",
+            "mac": {
+              "alg": "hmac-sha256",
+              "keyId": "test-vector-key-1",
+              "value": "gaBDZo94ZM09OBoiRkH51vxCw2MzJUZ391B7RR3KN0c"
+            },
+            "chain": {
+              "scope": "tenant_example",
+              "seq": 0,
+              "prev": null,
+              "link": {
+                "alg": "hmac-sha256",
+                "keyId": "test-vector-key-1",
+                "value": "rVgGcI5la47cZGwEmtCbrYQp_rpuadcls_0dQNqQtsI"
+              }
+            },
+            "sealedAt": "2026-09-02T04:00:00.000Z"
+          }
+        },
+        {
+          "spec": "action-provenance/1.0",
+          "id": "chain-record-2",
+          "correlationId": "corr_chain_2",
+          "recordedAt": "2026-09-02T03:02:30.000Z",
+          "action": {
+            "kind": "tool_call",
+            "at": "2026-09-02T03:02:00.000Z",
+            "effect": "write"
+          },
+          "principal": {
+            "id": "user_1",
+            "type": "human",
+            "tenant": "tenant_example"
+          },
+          "model": {
+            "resolved": "none",
+            "provider": "none"
+          },
+          "policy": {
+            "verdict": "deny",
+            "ref": "pol_default",
+            "version": "1"
+          },
+          "outcome": {
+            "status": "denied"
+          },
+          "integrity": {
+            "contentDigest": "sha256:1b910c3cdc2965c48cdf0c10453b181bc6c81f019b54414a234440182fe09892",
+            "mac": {
+              "alg": "hmac-sha256",
+              "keyId": "test-vector-key-1",
+              "value": "Ok94ecHZHUlu-IBbVTwKLoI35GkuCQgQpKzOYMzMlNs"
+            },
+            "chain": {
+              "scope": "tenant_example",
+              "seq": 2,
+              "prev": "sha256:a6ffe6da7a48159f86aa819785b12bfed9d7e28f04f00b868410561f638bbcac",
+              "link": {
+                "alg": "hmac-sha256",
+                "keyId": "test-vector-key-1",
+                "value": "PESsEBv7qWKhAUJaH96AvSHt3iG_3Oy-50w7muOAzi8"
+              }
+            },
+            "sealedAt": "2026-09-02T04:00:00.000Z"
+          }
+        }
+      ],
+      "expected": {
+        "ok": false,
+        "verified": 1,
+        "brokenAtSeq": 2,
+        "reason": "seq_gap"
+      }
+    },
+    {
+      "name": "reordered",
+      "description": "Records presented out of order.",
+      "scope": "tenant_example",
+      "records": [
+        {
+          "spec": "action-provenance/1.0",
+          "id": "chain-record-1",
+          "correlationId": "corr_chain_1",
+          "recordedAt": "2026-09-02T03:01:30.000Z",
+          "action": {
+            "kind": "tool_call",
+            "at": "2026-09-02T03:01:00.000Z",
+            "effect": "read"
+          },
+          "principal": {
+            "id": "user_1",
+            "type": "human",
+            "tenant": "tenant_example"
+          },
+          "model": {
+            "resolved": "none",
+            "provider": "none"
+          },
+          "policy": {
+            "verdict": "allow",
+            "ref": "pol_default",
+            "version": "1"
+          },
+          "outcome": {
+            "status": "succeeded"
+          },
+          "integrity": {
+            "contentDigest": "sha256:a6ffe6da7a48159f86aa819785b12bfed9d7e28f04f00b868410561f638bbcac",
+            "mac": {
+              "alg": "hmac-sha256",
+              "keyId": "test-vector-key-1",
+              "value": "C1wEErImxnWsZWUBv_yaGYFP5mOb2AYJj4gYeAAHTIU"
+            },
+            "chain": {
+              "scope": "tenant_example",
+              "seq": 1,
+              "prev": "sha256:09adb5fdef289391fdab8eb4b64cd77f232733727ba4cb0791b0fc273948fede",
+              "link": {
+                "alg": "hmac-sha256",
+                "keyId": "test-vector-key-1",
+                "value": "2XigFOJkfeb9x2zT9YUxRkuTN1pk2tj37RgCCYlhEUk"
+              }
+            },
+            "sealedAt": "2026-09-02T04:00:00.000Z"
+          }
+        },
+        {
+          "spec": "action-provenance/1.0",
+          "id": "chain-record-0",
+          "correlationId": "corr_chain_0",
+          "recordedAt": "2026-09-02T03:00:30.000Z",
+          "action": {
+            "kind": "chat_turn",
+            "at": "2026-09-02T03:00:00.000Z",
+            "effect": "none"
+          },
+          "principal": {
+            "id": "user_1",
+            "type": "human",
+            "tenant": "tenant_example"
+          },
+          "model": {
+            "resolved": "none",
+            "provider": "none"
+          },
+          "policy": {
+            "verdict": "allow",
+            "ref": "pol_default",
+            "version": "1"
+          },
+          "outcome": {
+            "status": "succeeded"
+          },
+          "integrity": {
+            "contentDigest": "sha256:09adb5fdef289391fdab8eb4b64cd77f232733727ba4cb0791b0fc273948fede",
+            "mac": {
+              "alg": "hmac-sha256",
+              "keyId": "test-vector-key-1",
+              "value": "gaBDZo94ZM09OBoiRkH51vxCw2MzJUZ391B7RR3KN0c"
+            },
+            "chain": {
+              "scope": "tenant_example",
+              "seq": 0,
+              "prev": null,
+              "link": {
+                "alg": "hmac-sha256",
+                "keyId": "test-vector-key-1",
+                "value": "rVgGcI5la47cZGwEmtCbrYQp_rpuadcls_0dQNqQtsI"
+              }
+            },
+            "sealedAt": "2026-09-02T04:00:00.000Z"
+          }
+        },
+        {
+          "spec": "action-provenance/1.0",
+          "id": "chain-record-2",
+          "correlationId": "corr_chain_2",
+          "recordedAt": "2026-09-02T03:02:30.000Z",
+          "action": {
+            "kind": "tool_call",
+            "at": "2026-09-02T03:02:00.000Z",
+            "effect": "write"
+          },
+          "principal": {
+            "id": "user_1",
+            "type": "human",
+            "tenant": "tenant_example"
+          },
+          "model": {
+            "resolved": "none",
+            "provider": "none"
+          },
+          "policy": {
+            "verdict": "deny",
+            "ref": "pol_default",
+            "version": "1"
+          },
+          "outcome": {
+            "status": "denied"
+          },
+          "integrity": {
+            "contentDigest": "sha256:1b910c3cdc2965c48cdf0c10453b181bc6c81f019b54414a234440182fe09892",
+            "mac": {
+              "alg": "hmac-sha256",
+              "keyId": "test-vector-key-1",
+              "value": "Ok94ecHZHUlu-IBbVTwKLoI35GkuCQgQpKzOYMzMlNs"
+            },
+            "chain": {
+              "scope": "tenant_example",
+              "seq": 2,
+              "prev": "sha256:a6ffe6da7a48159f86aa819785b12bfed9d7e28f04f00b868410561f638bbcac",
+              "link": {
+                "alg": "hmac-sha256",
+                "keyId": "test-vector-key-1",
+                "value": "PESsEBv7qWKhAUJaH96AvSHt3iG_3Oy-50w7muOAzi8"
+              }
+            },
+            "sealedAt": "2026-09-02T04:00:00.000Z"
+          }
+        }
+      ],
+      "expected": {
+        "ok": false,
+        "verified": 1,
+        "brokenAtSeq": 0,
+        "reason": "seq_gap"
+      }
+    },
+    {
+      "name": "broken-prev",
+      "description": "The record at seq 1 points at a digest that is not its predecessor's.",
+      "scope": "tenant_example",
+      "records": [
+        {
+          "spec": "action-provenance/1.0",
+          "id": "chain-record-0",
+          "correlationId": "corr_chain_0",
+          "recordedAt": "2026-09-02T03:00:30.000Z",
+          "action": {
+            "kind": "chat_turn",
+            "at": "2026-09-02T03:00:00.000Z",
+            "effect": "none"
+          },
+          "principal": {
+            "id": "user_1",
+            "type": "human",
+            "tenant": "tenant_example"
+          },
+          "model": {
+            "resolved": "none",
+            "provider": "none"
+          },
+          "policy": {
+            "verdict": "allow",
+            "ref": "pol_default",
+            "version": "1"
+          },
+          "outcome": {
+            "status": "succeeded"
+          },
+          "integrity": {
+            "contentDigest": "sha256:09adb5fdef289391fdab8eb4b64cd77f232733727ba4cb0791b0fc273948fede",
+            "mac": {
+              "alg": "hmac-sha256",
+              "keyId": "test-vector-key-1",
+              "value": "gaBDZo94ZM09OBoiRkH51vxCw2MzJUZ391B7RR3KN0c"
+            },
+            "chain": {
+              "scope": "tenant_example",
+              "seq": 0,
+              "prev": null,
+              "link": {
+                "alg": "hmac-sha256",
+                "keyId": "test-vector-key-1",
+                "value": "rVgGcI5la47cZGwEmtCbrYQp_rpuadcls_0dQNqQtsI"
+              }
+            },
+            "sealedAt": "2026-09-02T04:00:00.000Z"
+          }
+        },
+        {
+          "spec": "action-provenance/1.0",
+          "id": "chain-record-1",
+          "correlationId": "corr_chain_1",
+          "recordedAt": "2026-09-02T03:01:30.000Z",
+          "action": {
+            "kind": "tool_call",
+            "at": "2026-09-02T03:01:00.000Z",
+            "effect": "read"
+          },
+          "principal": {
+            "id": "user_1",
+            "type": "human",
+            "tenant": "tenant_example"
+          },
+          "model": {
+            "resolved": "none",
+            "provider": "none"
+          },
+          "policy": {
+            "verdict": "allow",
+            "ref": "pol_default",
+            "version": "1"
+          },
+          "outcome": {
+            "status": "succeeded"
+          },
+          "integrity": {
+            "contentDigest": "sha256:a6ffe6da7a48159f86aa819785b12bfed9d7e28f04f00b868410561f638bbcac",
+            "mac": {
+              "alg": "hmac-sha256",
+              "keyId": "test-vector-key-1",
+              "value": "C1wEErImxnWsZWUBv_yaGYFP5mOb2AYJj4gYeAAHTIU"
+            },
+            "chain": {
+              "scope": "tenant_example",
+              "seq": 1,
+              "prev": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+              "link": {
+                "alg": "hmac-sha256",
+                "keyId": "test-vector-key-1",
+                "value": "2XigFOJkfeb9x2zT9YUxRkuTN1pk2tj37RgCCYlhEUk"
+              }
+            },
+            "sealedAt": "2026-09-02T04:00:00.000Z"
+          }
+        },
+        {
+          "spec": "action-provenance/1.0",
+          "id": "chain-record-2",
+          "correlationId": "corr_chain_2",
+          "recordedAt": "2026-09-02T03:02:30.000Z",
+          "action": {
+            "kind": "tool_call",
+            "at": "2026-09-02T03:02:00.000Z",
+            "effect": "write"
+          },
+          "principal": {
+            "id": "user_1",
+            "type": "human",
+            "tenant": "tenant_example"
+          },
+          "model": {
+            "resolved": "none",
+            "provider": "none"
+          },
+          "policy": {
+            "verdict": "deny",
+            "ref": "pol_default",
+            "version": "1"
+          },
+          "outcome": {
+            "status": "denied"
+          },
+          "integrity": {
+            "contentDigest": "sha256:1b910c3cdc2965c48cdf0c10453b181bc6c81f019b54414a234440182fe09892",
+            "mac": {
+              "alg": "hmac-sha256",
+              "keyId": "test-vector-key-1",
+              "value": "Ok94ecHZHUlu-IBbVTwKLoI35GkuCQgQpKzOYMzMlNs"
+            },
+            "chain": {
+              "scope": "tenant_example",
+              "seq": 2,
+              "prev": "sha256:a6ffe6da7a48159f86aa819785b12bfed9d7e28f04f00b868410561f638bbcac",
+              "link": {
+                "alg": "hmac-sha256",
+                "keyId": "test-vector-key-1",
+                "value": "PESsEBv7qWKhAUJaH96AvSHt3iG_3Oy-50w7muOAzi8"
+              }
+            },
+            "sealedAt": "2026-09-02T04:00:00.000Z"
+          }
+        }
+      ],
+      "expected": {
+        "ok": false,
+        "verified": 1,
+        "brokenAtSeq": 1,
+        "reason": "broken_prev_link"
+      }
+    },
+    {
+      "name": "content-changed",
+      "description": "The record at seq 1 was changed after sealing.",
+      "scope": "tenant_example",
+      "records": [
+        {
+          "spec": "action-provenance/1.0",
+          "id": "chain-record-0",
+          "correlationId": "corr_chain_0",
+          "recordedAt": "2026-09-02T03:00:30.000Z",
+          "action": {
+            "kind": "chat_turn",
+            "at": "2026-09-02T03:00:00.000Z",
+            "effect": "none"
+          },
+          "principal": {
+            "id": "user_1",
+            "type": "human",
+            "tenant": "tenant_example"
+          },
+          "model": {
+            "resolved": "none",
+            "provider": "none"
+          },
+          "policy": {
+            "verdict": "allow",
+            "ref": "pol_default",
+            "version": "1"
+          },
+          "outcome": {
+            "status": "succeeded"
+          },
+          "integrity": {
+            "contentDigest": "sha256:09adb5fdef289391fdab8eb4b64cd77f232733727ba4cb0791b0fc273948fede",
+            "mac": {
+              "alg": "hmac-sha256",
+              "keyId": "test-vector-key-1",
+              "value": "gaBDZo94ZM09OBoiRkH51vxCw2MzJUZ391B7RR3KN0c"
+            },
+            "chain": {
+              "scope": "tenant_example",
+              "seq": 0,
+              "prev": null,
+              "link": {
+                "alg": "hmac-sha256",
+                "keyId": "test-vector-key-1",
+                "value": "rVgGcI5la47cZGwEmtCbrYQp_rpuadcls_0dQNqQtsI"
+              }
+            },
+            "sealedAt": "2026-09-02T04:00:00.000Z"
+          }
+        },
+        {
+          "spec": "action-provenance/1.0",
+          "id": "chain-record-1",
+          "correlationId": "corr_chain_1",
+          "recordedAt": "2026-09-02T03:01:30.000Z",
+          "action": {
+            "kind": "tool_call",
+            "at": "2026-09-02T03:01:00.000Z",
+            "effect": "read"
+          },
+          "principal": {
+            "id": "user_1",
+            "type": "human",
+            "tenant": "tenant_example"
+          },
+          "model": {
+            "resolved": "none",
+            "provider": "none"
+          },
+          "policy": {
+            "verdict": "allow",
+            "ref": "pol_default",
+            "version": "1"
+          },
+          "outcome": {
+            "status": "failed"
+          },
+          "integrity": {
+            "contentDigest": "sha256:a6ffe6da7a48159f86aa819785b12bfed9d7e28f04f00b868410561f638bbcac",
+            "mac": {
+              "alg": "hmac-sha256",
+              "keyId": "test-vector-key-1",
+              "value": "C1wEErImxnWsZWUBv_yaGYFP5mOb2AYJj4gYeAAHTIU"
+            },
+            "chain": {
+              "scope": "tenant_example",
+              "seq": 1,
+              "prev": "sha256:09adb5fdef289391fdab8eb4b64cd77f232733727ba4cb0791b0fc273948fede",
+              "link": {
+                "alg": "hmac-sha256",
+                "keyId": "test-vector-key-1",
+                "value": "2XigFOJkfeb9x2zT9YUxRkuTN1pk2tj37RgCCYlhEUk"
+              }
+            },
+            "sealedAt": "2026-09-02T04:00:00.000Z"
+          }
+        },
+        {
+          "spec": "action-provenance/1.0",
+          "id": "chain-record-2",
+          "correlationId": "corr_chain_2",
+          "recordedAt": "2026-09-02T03:02:30.000Z",
+          "action": {
+            "kind": "tool_call",
+            "at": "2026-09-02T03:02:00.000Z",
+            "effect": "write"
+          },
+          "principal": {
+            "id": "user_1",
+            "type": "human",
+            "tenant": "tenant_example"
+          },
+          "model": {
+            "resolved": "none",
+            "provider": "none"
+          },
+          "policy": {
+            "verdict": "deny",
+            "ref": "pol_default",
+            "version": "1"
+          },
+          "outcome": {
+            "status": "denied"
+          },
+          "integrity": {
+            "contentDigest": "sha256:1b910c3cdc2965c48cdf0c10453b181bc6c81f019b54414a234440182fe09892",
+            "mac": {
+              "alg": "hmac-sha256",
+              "keyId": "test-vector-key-1",
+              "value": "Ok94ecHZHUlu-IBbVTwKLoI35GkuCQgQpKzOYMzMlNs"
+            },
+            "chain": {
+              "scope": "tenant_example",
+              "seq": 2,
+              "prev": "sha256:a6ffe6da7a48159f86aa819785b12bfed9d7e28f04f00b868410561f638bbcac",
+              "link": {
+                "alg": "hmac-sha256",
+                "keyId": "test-vector-key-1",
+                "value": "PESsEBv7qWKhAUJaH96AvSHt3iG_3Oy-50w7muOAzi8"
+              }
+            },
+            "sealedAt": "2026-09-02T04:00:00.000Z"
+          }
+        }
+      ],
+      "expected": {
+        "ok": false,
+        "verified": 1,
+        "brokenAtSeq": 1,
+        "reason": "record_invalid"
+      }
+    },
+    {
+      "name": "forged-link",
+      "description": "The link proof at seq 2 was computed with a different key.",
+      "scope": "tenant_example",
+      "records": [
+        {
+          "spec": "action-provenance/1.0",
+          "id": "chain-record-0",
+          "correlationId": "corr_chain_0",
+          "recordedAt": "2026-09-02T03:00:30.000Z",
+          "action": {
+            "kind": "chat_turn",
+            "at": "2026-09-02T03:00:00.000Z",
+            "effect": "none"
+          },
+          "principal": {
+            "id": "user_1",
+            "type": "human",
+            "tenant": "tenant_example"
+          },
+          "model": {
+            "resolved": "none",
+            "provider": "none"
+          },
+          "policy": {
+            "verdict": "allow",
+            "ref": "pol_default",
+            "version": "1"
+          },
+          "outcome": {
+            "status": "succeeded"
+          },
+          "integrity": {
+            "contentDigest": "sha256:09adb5fdef289391fdab8eb4b64cd77f232733727ba4cb0791b0fc273948fede",
+            "mac": {
+              "alg": "hmac-sha256",
+              "keyId": "test-vector-key-1",
+              "value": "gaBDZo94ZM09OBoiRkH51vxCw2MzJUZ391B7RR3KN0c"
+            },
+            "chain": {
+              "scope": "tenant_example",
+              "seq": 0,
+              "prev": null,
+              "link": {
+                "alg": "hmac-sha256",
+                "keyId": "test-vector-key-1",
+                "value": "rVgGcI5la47cZGwEmtCbrYQp_rpuadcls_0dQNqQtsI"
+              }
+            },
+            "sealedAt": "2026-09-02T04:00:00.000Z"
+          }
+        },
+        {
+          "spec": "action-provenance/1.0",
+          "id": "chain-record-1",
+          "correlationId": "corr_chain_1",
+          "recordedAt": "2026-09-02T03:01:30.000Z",
+          "action": {
+            "kind": "tool_call",
+            "at": "2026-09-02T03:01:00.000Z",
+            "effect": "read"
+          },
+          "principal": {
+            "id": "user_1",
+            "type": "human",
+            "tenant": "tenant_example"
+          },
+          "model": {
+            "resolved": "none",
+            "provider": "none"
+          },
+          "policy": {
+            "verdict": "allow",
+            "ref": "pol_default",
+            "version": "1"
+          },
+          "outcome": {
+            "status": "succeeded"
+          },
+          "integrity": {
+            "contentDigest": "sha256:a6ffe6da7a48159f86aa819785b12bfed9d7e28f04f00b868410561f638bbcac",
+            "mac": {
+              "alg": "hmac-sha256",
+              "keyId": "test-vector-key-1",
+              "value": "C1wEErImxnWsZWUBv_yaGYFP5mOb2AYJj4gYeAAHTIU"
+            },
+            "chain": {
+              "scope": "tenant_example",
+              "seq": 1,
+              "prev": "sha256:09adb5fdef289391fdab8eb4b64cd77f232733727ba4cb0791b0fc273948fede",
+              "link": {
+                "alg": "hmac-sha256",
+                "keyId": "test-vector-key-1",
+                "value": "2XigFOJkfeb9x2zT9YUxRkuTN1pk2tj37RgCCYlhEUk"
+              }
+            },
+            "sealedAt": "2026-09-02T04:00:00.000Z"
+          }
+        },
+        {
+          "spec": "action-provenance/1.0",
+          "id": "chain-record-2",
+          "correlationId": "corr_chain_2",
+          "recordedAt": "2026-09-02T03:02:30.000Z",
+          "action": {
+            "kind": "tool_call",
+            "at": "2026-09-02T03:02:00.000Z",
+            "effect": "write"
+          },
+          "principal": {
+            "id": "user_1",
+            "type": "human",
+            "tenant": "tenant_example"
+          },
+          "model": {
+            "resolved": "none",
+            "provider": "none"
+          },
+          "policy": {
+            "verdict": "deny",
+            "ref": "pol_default",
+            "version": "1"
+          },
+          "outcome": {
+            "status": "denied"
+          },
+          "integrity": {
+            "contentDigest": "sha256:1b910c3cdc2965c48cdf0c10453b181bc6c81f019b54414a234440182fe09892",
+            "mac": {
+              "alg": "hmac-sha256",
+              "keyId": "test-vector-key-1",
+              "value": "Ok94ecHZHUlu-IBbVTwKLoI35GkuCQgQpKzOYMzMlNs"
+            },
+            "chain": {
+              "scope": "tenant_example",
+              "seq": 2,
+              "prev": "sha256:a6ffe6da7a48159f86aa819785b12bfed9d7e28f04f00b868410561f638bbcac",
+              "link": {
+                "alg": "hmac-sha256",
+                "keyId": "test-vector-key-1",
+                "value": "O-f4myZ7aHzmjsCU1Gn7QfD7qSgF32Nyrgo70gn4Fg8"
+              }
+            },
+            "sealedAt": "2026-09-02T04:00:00.000Z"
+          }
+        }
+      ],
+      "expected": {
+        "ok": false,
+        "verified": 2,
+        "brokenAtSeq": 2,
+        "reason": "record_invalid"
+      }
+    },
+    {
+      "name": "wrong-scope",
+      "description": "An intact chain verified against a different scope.",
+      "scope": "tenant_other",
+      "records": [
+        {
+          "spec": "action-provenance/1.0",
+          "id": "chain-record-0",
+          "correlationId": "corr_chain_0",
+          "recordedAt": "2026-09-02T03:00:30.000Z",
+          "action": {
+            "kind": "chat_turn",
+            "at": "2026-09-02T03:00:00.000Z",
+            "effect": "none"
+          },
+          "principal": {
+            "id": "user_1",
+            "type": "human",
+            "tenant": "tenant_example"
+          },
+          "model": {
+            "resolved": "none",
+            "provider": "none"
+          },
+          "policy": {
+            "verdict": "allow",
+            "ref": "pol_default",
+            "version": "1"
+          },
+          "outcome": {
+            "status": "succeeded"
+          },
+          "integrity": {
+            "contentDigest": "sha256:09adb5fdef289391fdab8eb4b64cd77f232733727ba4cb0791b0fc273948fede",
+            "mac": {
+              "alg": "hmac-sha256",
+              "keyId": "test-vector-key-1",
+              "value": "gaBDZo94ZM09OBoiRkH51vxCw2MzJUZ391B7RR3KN0c"
+            },
+            "chain": {
+              "scope": "tenant_example",
+              "seq": 0,
+              "prev": null,
+              "link": {
+                "alg": "hmac-sha256",
+                "keyId": "test-vector-key-1",
+                "value": "rVgGcI5la47cZGwEmtCbrYQp_rpuadcls_0dQNqQtsI"
+              }
+            },
+            "sealedAt": "2026-09-02T04:00:00.000Z"
+          }
+        },
+        {
+          "spec": "action-provenance/1.0",
+          "id": "chain-record-1",
+          "correlationId": "corr_chain_1",
+          "recordedAt": "2026-09-02T03:01:30.000Z",
+          "action": {
+            "kind": "tool_call",
+            "at": "2026-09-02T03:01:00.000Z",
+            "effect": "read"
+          },
+          "principal": {
+            "id": "user_1",
+            "type": "human",
+            "tenant": "tenant_example"
+          },
+          "model": {
+            "resolved": "none",
+            "provider": "none"
+          },
+          "policy": {
+            "verdict": "allow",
+            "ref": "pol_default",
+            "version": "1"
+          },
+          "outcome": {
+            "status": "succeeded"
+          },
+          "integrity": {
+            "contentDigest": "sha256:a6ffe6da7a48159f86aa819785b12bfed9d7e28f04f00b868410561f638bbcac",
+            "mac": {
+              "alg": "hmac-sha256",
+              "keyId": "test-vector-key-1",
+              "value": "C1wEErImxnWsZWUBv_yaGYFP5mOb2AYJj4gYeAAHTIU"
+            },
+            "chain": {
+              "scope": "tenant_example",
+              "seq": 1,
+              "prev": "sha256:09adb5fdef289391fdab8eb4b64cd77f232733727ba4cb0791b0fc273948fede",
+              "link": {
+                "alg": "hmac-sha256",
+                "keyId": "test-vector-key-1",
+                "value": "2XigFOJkfeb9x2zT9YUxRkuTN1pk2tj37RgCCYlhEUk"
+              }
+            },
+            "sealedAt": "2026-09-02T04:00:00.000Z"
+          }
+        },
+        {
+          "spec": "action-provenance/1.0",
+          "id": "chain-record-2",
+          "correlationId": "corr_chain_2",
+          "recordedAt": "2026-09-02T03:02:30.000Z",
+          "action": {
+            "kind": "tool_call",
+            "at": "2026-09-02T03:02:00.000Z",
+            "effect": "write"
+          },
+          "principal": {
+            "id": "user_1",
+            "type": "human",
+            "tenant": "tenant_example"
+          },
+          "model": {
+            "resolved": "none",
+            "provider": "none"
+          },
+          "policy": {
+            "verdict": "deny",
+            "ref": "pol_default",
+            "version": "1"
+          },
+          "outcome": {
+            "status": "denied"
+          },
+          "integrity": {
+            "contentDigest": "sha256:1b910c3cdc2965c48cdf0c10453b181bc6c81f019b54414a234440182fe09892",
+            "mac": {
+              "alg": "hmac-sha256",
+              "keyId": "test-vector-key-1",
+              "value": "Ok94ecHZHUlu-IBbVTwKLoI35GkuCQgQpKzOYMzMlNs"
+            },
+            "chain": {
+              "scope": "tenant_example",
+              "seq": 2,
+              "prev": "sha256:a6ffe6da7a48159f86aa819785b12bfed9d7e28f04f00b868410561f638bbcac",
+              "link": {
+                "alg": "hmac-sha256",
+                "keyId": "test-vector-key-1",
+                "value": "PESsEBv7qWKhAUJaH96AvSHt3iG_3Oy-50w7muOAzi8"
+              }
+            },
+            "sealedAt": "2026-09-02T04:00:00.000Z"
+          }
+        }
+      ],
+      "expected": {
+        "ok": false,
+        "verified": 0,
+        "brokenAtSeq": 0,
+        "reason": "wrong_scope"
+      }
+    }
+  ]
+}

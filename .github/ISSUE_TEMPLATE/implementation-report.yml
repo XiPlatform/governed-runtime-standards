@@ -1,0 +1,56 @@
+name: Implementation report
+description: Declare the conformance level of an implementation, or discuss a report before submitting it.
+title: "[Implementation report] "
+labels: ["implementation-report"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Conformance is self-declared and is not certified or endorsed by the maintainers. The usual way to submit a report is a pull request adding `conformance/implementations/<name>.md` in the format described in `conformance/README.md`. Use this form if you prefer to start with an issue.
+  - type: input
+    id: implementation
+    attributes:
+      label: Implementation
+      description: Product or library name, and version or release train.
+    validations:
+      required: true
+  - type: input
+    id: implementer
+    attributes:
+      label: Implementer
+      description: Legal name and country of the organisation or person making the claims.
+    validations:
+      required: true
+  - type: checkboxes
+    id: specs
+    attributes:
+      label: Specifications implemented
+      options:
+        - label: Action Provenance Record (action-provenance/1.0)
+        - label: Action Approval Attestation (action-approval/1.0)
+        - label: Governed Runtime Profile (governed-runtime/1.0)
+  - type: textarea
+    id: claims
+    attributes:
+      label: Claims
+      description: The level claimed for each specification, and any limitation by edition, plan or configuration.
+      placeholder: |
+        action-provenance/1.0: Level 3, keyed MACs, no signatures
+        action-approval/1.0: Level 2
+        governed-runtime/1.0: Level 2, GR-6 available on all plans
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence and contact
+      description: Where a reviewer can obtain evidence, and who to contact about the report.
+    validations:
+      required: true
+  - type: checkboxes
+    id: confirm
+    attributes:
+      label: Confirmation
+      options:
+        - label: I am authorised to make these claims on the implementer's behalf, and they are accurate as of today.
+          required: true

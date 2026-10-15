@@ -1,0 +1,53 @@
+name: Erratum report
+description: The text contradicts itself, a schema, another specification, the test vectors or the reference implementation, or cites something incorrectly.
+title: "[Erratum] "
+labels: ["erratum"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this form to report an error in version 1.0 of a specification, its schema, or the test vectors. Errata are corrected in the current version and recorded in the change history. Do not report security vulnerabilities here; see SECURITY.md.
+  - type: dropdown
+    id: spec
+    attributes:
+      label: Specification
+      options:
+        - Action Provenance Record (action-provenance/1.0)
+        - Action Approval Attestation (action-approval/1.0)
+        - Governed Runtime Profile (governed-runtime/1.0)
+        - JSON Schema
+        - Test vectors
+        - More than one
+    validations:
+      required: true
+  - type: input
+    id: section
+    attributes:
+      label: Section
+      description: Section number and title, or the file and member for a schema or a test vector.
+    validations:
+      required: true
+  - type: textarea
+    id: error
+    attributes:
+      label: What is wrong
+      description: Quote the text and explain what it contradicts or gets wrong.
+    validations:
+      required: true
+  - type: textarea
+    id: correction
+    attributes:
+      label: Proposed correction
+      description: The corrected text, if you have one.
+  - type: dropdown
+    id: impact
+    attributes:
+      label: Effect on conformance
+      description: Would the correction change which documents or runtimes conform?
+      options:
+        - "No: the correction only makes the intended meaning clear"
+        - "Yes: some documents or runtimes that conformed would no longer conform"
+        - "Yes: some documents or runtimes that did not conform would now conform"
+        - Not sure
+    validations:
+      required: true

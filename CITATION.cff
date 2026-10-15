@@ -1,0 +1,31 @@
+cff-version: 1.2.0
+message: "If you cite the Governed Runtime Standards, please use the metadata in this file."
+title: "Governed Runtime Standards: Action Provenance Record, Action Approval Attestation and Governed Runtime Profile"
+type: software
+version: "1.0.0"
+date-released: "2026-10-15"
+authors:
+  - name: "Renly (XiPlatform Pty Ltd)"
+    country: AU
+    website: "https://renly.ai"
+license: Apache-2.0
+repository-code: "https://github.com/XiPlatform/governed-runtime-standards"
+url: "https://renly.ai/standards"
+abstract: >-
+  Open specifications for recording what AI agents do and on whose authority.
+  The Action Provenance Record is a sealed, verifiable record of one action
+  taken by or through an AI agent. The Action Approval Attestation binds a
+  human approval to a digest of the exact proposed action, with a scope and
+  bounds. The Governed Runtime Profile defines twelve testable guarantees for
+  agent runtimes. Each specification has three conformance levels. Includes
+  JSON Schemas, a zero-dependency TypeScript reference implementation and test
+  vectors.
+keywords:
+  - AI agents
+  - provenance
+  - accountability
+  - audit
+  - human-in-the-loop
+  - approval
+  - governance
+  - specification

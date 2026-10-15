@@ -1,0 +1,79 @@
+{
+  "title": "Canonical serialisation and SHA-256 digests",
+  "specs": [
+    "action-provenance/1.0",
+    "action-approval/1.0"
+  ],
+  "generator": "governed-runtime 1.0.0 reference implementation, scripts/generate-test-vectors.mjs",
+  "notes": [
+    "input is JSON text. Parse it, serialise it in canonical form, and compare with canonical.",
+    "canonicalUtf8Hex is the UTF-8 encoding of canonical. sha256 is the digest of those bytes in the specification syntax.",
+    "For inputs made of standard JSON values these outputs are identical to RFC 8785 (JCS)."
+  ],
+  "vectors": [
+    {
+      "name": "member-order",
+      "description": "Object members are sorted by key at every level. Arrays keep their order.",
+      "input": "{\"b\":1,\"a\":{\"d\":[3,1,2],\"c\":null}}",
+      "canonical": "{\"a\":{\"c\":null,\"d\":[3,1,2]},\"b\":1}",
+      "canonicalUtf8Hex": "7b2261223a7b2263223a6e756c6c2c2264223a5b332c312c325d7d2c2262223a317d",
+      "sha256": "sha256:a8a968ad1a48a57322f837e454501e9c9c5765f5f978cac6057136789e65a9ac"
+    },
+    {
+      "name": "whitespace",
+      "description": "Insignificant whitespace is removed.",
+      "input": "{\n  \"z\" : [ 1 , 2 ],\n  \"y\" : { \"x\" : \"\" }\n}",
+      "canonical": "{\"y\":{\"x\":\"\"},\"z\":[1,2]}",
+      "canonicalUtf8Hex": "7b2279223a7b2278223a22227d2c227a223a5b312c325d7d",
+      "sha256": "sha256:3e8fe3668d335505615d44e64bf16e6280f01c5e3c62f5ce32699dc675bb6a11"
+    },
+    {
+      "name": "literals-and-empty-values",
+      "description": "true, false, null, empty object, empty array and empty string.",
+      "input": "{\"t\":true,\"f\":false,\"n\":null,\"o\":{},\"a\":[],\"s\":\"\"}",
+      "canonical": "{\"a\":[],\"f\":false,\"n\":null,\"o\":{},\"s\":\"\",\"t\":true}",
+      "canonicalUtf8Hex": "7b2261223a5b5d2c2266223a66616c73652c226e223a6e756c6c2c226f223a7b7d2c2273223a22222c2274223a747275657d",
+      "sha256": "sha256:6224406a9a069e4f09c4b31238775612f45ec1b103ac97d01b553730817e025f"
+    },
+    {
+      "name": "numbers",
+      "description": "Numbers are serialised as by ECMAScript JSON.stringify (Number::toString): no trailing zeros, negative zero as 0, exponent form from 1e21 and below 1e-6.",
+      "input": "{\"int\":1,\"trailingZero\":1.0,\"negativeZero\":-0,\"half\":1.5,\"tenth\":0.1,\"third\":0.3333333333333333,\"exponentUpper\":2E3,\"belowExponent\":100000000000000000000,\"atExponent\":1e21,\"smallPlain\":0.000001,\"smallExponent\":1e-7,\"beyondPrecision\":123456789012345678901234567890,\"negative\":-42}",
+      "canonical": "{\"atExponent\":1e+21,\"belowExponent\":100000000000000000000,\"beyondPrecision\":1.2345678901234568e+29,\"exponentUpper\":2000,\"half\":1.5,\"int\":1,\"negative\":-42,\"negativeZero\":0,\"smallExponent\":1e-7,\"smallPlain\":0.000001,\"tenth\":0.1,\"third\":0.3333333333333333,\"trailingZero\":1}",
+      "canonicalUtf8Hex": "7b2261744578706f6e656e74223a31652b32312c2262656c6f774578706f6e656e74223a3130303030303030303030303030303030303030302c226265796f6e64507265636973696f6e223a312e32333435363738393031323334353638652b32392c226578706f6e656e745570706572223a323030302c2268616c66223a312e352c22696e74223a312c226e65676174697665223a2d34322c226e656761746976655a65726f223a302c22736d616c6c4578706f6e656e74223a31652d372c22736d616c6c506c61696e223a302e3030303030312c2274656e7468223a302e312c227468697264223a302e333333333333333333333333333333332c22747261696c696e675a65726f223a317d",
+      "sha256": "sha256:50b8081de6ef2b58b38c3a0785bb1eddc3c8b294a0765de82bb4eaad5d0d70b2"
+    },
+    {
+      "name": "strings",
+      "description": "Strings are serialised as by ECMAScript JSON.stringify: quotation mark, reverse solidus and control characters are escaped (\\b \\t \\n \\f \\r or lowercase \\u00XX); the solidus, DEL and all other characters, including U+2028, are written as UTF-8.",
+      "input": "{\"quote\":\"\\\"\",\"backslash\":\"\\\\\",\"solidus\":\"\\/\",\"newline\":\"\\n\",\"tab\":\"\\t\",\"backspace\":\"\\b\",\"control\":\"\\u0001\",\"unitSeparator\":\"\\u001F\",\"delete\":\"\\u007f\",\"latin\":\"\\u00e9\",\"cjk\":\"\\u6f22\",\"emoji\":\"\\ud83d\\ude00\",\"lineSeparator\":\"\\u2028\"}",
+      "canonical": "{\"backslash\":\"\\\\\",\"backspace\":\"\\b\",\"cjk\":\"漢\",\"control\":\"\\u0001\",\"delete\":\"\",\"emoji\":\"😀\",\"latin\":\"é\",\"lineSeparator\":\" \",\"newline\":\"\\n\",\"quote\":\"\\\"\",\"solidus\":\"/\",\"tab\":\"\\t\",\"unitSeparator\":\"\\u001f\"}",
+      "canonicalUtf8Hex": "7b226261636b736c617368223a225c5c222c226261636b7370616365223a225c62222c22636a6b223a22e6bca2222c22636f6e74726f6c223a225c7530303031222c2264656c657465223a227f222c22656d6f6a69223a22f09f9880222c226c6174696e223a22c3a9222c226c696e65536570617261746f72223a22e280a8222c226e65776c696e65223a225c6e222c2271756f7465223a225c22222c22736f6c69647573223a222f222c22746162223a225c74222c22756e6974536570617261746f72223a225c7530303166227d",
+      "sha256": "sha256:9e7d96f1558f2df50a91fcc6d1375c8746d15fe3ee74d550664b29ffa6089d39"
+    },
+    {
+      "name": "key-order-utf16",
+      "description": "Keys are compared as sequences of UTF-16 code units, not code points: U+1F600 (code units D83D DE00) sorts before U+E000. The empty key sorts first, and a key sorts before any longer key it prefixes.",
+      "input": "{\"\\ue000\":1,\"\\ud83d\\ude00\":2,\"a\":3,\"A\":4,\"\\u00e9\":5,\"aa\":6,\"\":7}",
+      "canonical": "{\"\":7,\"A\":4,\"a\":3,\"aa\":6,\"é\":5,\"😀\":2,\"\":1}",
+      "canonicalUtf8Hex": "7b22223a372c2241223a342c2261223a332c226161223a362c22c3a9223a352c22f09f9880223a322c22ee8080223a317d",
+      "sha256": "sha256:2459229af4f23e970db4ae6d0d9deb54a2011e024d26f9aa1fd12c44b466996e"
+    },
+    {
+      "name": "nested-arrays",
+      "description": "Objects inside arrays are canonicalised; the array order is preserved.",
+      "input": "[{\"b\":[{\"d\":1,\"c\":2}],\"a\":0},[],\"x\"]",
+      "canonical": "[{\"a\":0,\"b\":[{\"c\":2,\"d\":1}]},[],\"x\"]",
+      "canonicalUtf8Hex": "5b7b2261223a302c2262223a5b7b2263223a322c2264223a317d5d7d2c5b5d2c2278225d",
+      "sha256": "sha256:d728d54216d32cba4bd837f9bd2f4337b133b2aa1ac9e8b80fbe4ac64e54e128"
+    },
+    {
+      "name": "integrity-is-ordinary-content",
+      "description": "Removing the integrity member is part of computing a document digest (content-digest.json), not of canonical serialisation. In other content, such as tool arguments, a member named integrity is serialised like any other.",
+      "input": "{\"to\":\"accounts@northwind.example\",\"integrity\":\"retained\"}",
+      "canonical": "{\"integrity\":\"retained\",\"to\":\"accounts@northwind.example\"}",
+      "canonicalUtf8Hex": "7b22696e74656772697479223a2272657461696e6564222c22746f223a226163636f756e7473406e6f72746877696e642e6578616d706c65227d",
+      "sha256": "sha256:bb7347867559a4b105493199fae9f07bef6b6153c9ef60ebbfbaa565b6ad95e7"
+    }
+  ]
+}

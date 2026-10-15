@@ -1,0 +1,1931 @@
+{
+  "title": "Conformance levels of records and attestations",
+  "specs": [
+    "action-provenance/1.0",
+    "action-approval/1.0"
+  ],
+  "generator": "governed-runtime 1.0.0 reference implementation, scripts/generate-test-vectors.mjs",
+  "notes": [
+    "expectedLevel is the highest conformance level the document satisfies, or 0 when it does not satisfy Level 1.",
+    "Level 3 cases are sealed with the test key from seal-and-verify.json. Establishing Level 3 needs no key: the content digest is recomputed and a MAC or signature must be present. Checking the MAC itself is covered by seal-and-verify.json.",
+    "failingAtNextLevel lists the JSON Pointer paths the reference implementation reports against the next level. It is informative."
+  ],
+  "cases": [
+    {
+      "name": "record-read-only",
+      "description": "A read-only chat turn with a policy verdict.",
+      "type": "record",
+      "document": {
+        "spec": "action-provenance/1.0",
+        "id": "5e6f7a8b-9c0d-4e1f-a2b3-c4d5e6f7a8b9",
+        "correlationId": "corr_01J9X3S4C6D8E0F2G4H6J8K0M2",
+        "recordedAt": "2026-09-02T03:25:51.330Z",
+        "action": {
+          "kind": "chat_turn",
+          "at": "2026-09-02T03:25:44.008Z",
+          "effect": "read",
+          "description": "Summarise open opportunities closing this quarter"
+        },
+        "principal": {
+          "id": "user_2f9a",
+          "type": "human",
+          "tenant": "org_acme"
+        },
+        "agent": {
+          "id": "agent_sales_analyst",
+          "name": "Sales Analyst",
+          "version": "4"
+        },
+        "model": {
+          "requested": "claude-opus-5",
+          "resolved": "claude-opus-5",
+          "provider": "anthropic"
+        },
+        "policy": {
+          "verdict": "allow",
+          "ref": "pol_default_read",
+          "version": "1"
+        },
+        "approval": {
+          "required": false,
+          "decision": "not_required"
+        },
+        "effects": [
+          {
+            "tool": "salesforce.query",
+            "target": "salesforce",
+            "status": "succeeded",
+            "sideEffecting": false,
+            "argsDigest": "sha256:abababababababababababababababababababababababababababababababab"
+          }
+        ],
+        "workProduct": {
+          "outputDigest": "sha256:3333333333333333333333333333333333333333333333333333333333333333",
+          "sources": [
+            "salesforce:report/Q3-pipeline"
+          ]
+        },
+        "cost": {
+          "inputTokens": 5120,
+          "outputTokens": 880,
+          "attribution": "approximate"
+        },
+        "outcome": {
+          "status": "succeeded"
+        }
+      },
+      "expectedLevel": 2,
+      "failingAtNextLevel": [
+        "/integrity"
+      ]
+    },
+    {
+      "name": "record-approved-write",
+      "description": "A human-approved write, unsealed.",
+      "type": "record",
+      "document": {
+        "spec": "action-provenance/1.0",
+        "id": "8d0f2c1e-6f8b-4a2c-9c3e-2b6f1a9d4e70",
+        "correlationId": "corr_01J9X3Q0Z8K7M2N5P4R6S7T8V9",
+        "recordedAt": "2026-09-02T03:12:41.902Z",
+        "action": {
+          "kind": "tool_call",
+          "at": "2026-09-02T03:12:39.117Z",
+          "effect": "write",
+          "description": "Send the August aged-receivables reminder to Northwind"
+        },
+        "principal": {
+          "id": "user_2f9a",
+          "type": "human",
+          "display": "Sarah Chen",
+          "tenant": "org_acme"
+        },
+        "agent": {
+          "id": "agent_finance_ops",
+          "name": "Finance Operations",
+          "version": "7",
+          "bundleDigest": "sha256:3b7f1c0d9a2e5f4b8c6d7e1a0f9b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b",
+          "instructionsDigest": "sha256:9e1d2c3b4a5f6e7d8c9b0a1f2e3d4c5b6a7f8e9d0c1b2a3f4e5d6c7b8a9f0e1d"
+        },
+        "model": {
+          "requested": "gpt-5",
+          "resolved": "gpt-5-2026-03-01",
+          "provider": "azure-openai"
+        },
+        "context": {
+          "tenant": "org_acme",
+          "workspace": "ws_finance",
+          "session": "sess_7c2e",
+          "execution": "exec_44a1"
+        },
+        "policy": {
+          "verdict": "allow",
+          "ref": "pol_finance_outbound_email",
+          "version": "3",
+          "evaluations": [
+            {
+              "evaluator": "gate",
+              "decision": "allow",
+              "code": "OK"
+            },
+            {
+              "evaluator": "semantic",
+              "decision": "allow",
+              "confidence": 0.94,
+              "reasons": [
+                "recipient is an existing customer",
+                "amount below escalation threshold"
+              ]
+            }
+          ]
+        },
+        "approval": {
+          "required": true,
+          "decision": "approved",
+          "approver": {
+            "id": "user_2f9a",
+            "type": "human",
+            "display": "Sarah Chen"
+          },
+          "at": "2026-09-02T03:12:38.640Z",
+          "method": "ui",
+          "attestation": "att_01J9X3PZ9C4D6E8F0G2H4J6K8M"
+        },
+        "effects": [
+          {
+            "tool": "outlook.send_email",
+            "target": "microsoft-outlook",
+            "status": "succeeded",
+            "sideEffecting": true,
+            "argsDigest": "sha256:5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b",
+            "responseDigest": "sha256:c0ffee0000000000000000000000000000000000000000000000000000000001",
+            "resultRef": "AAMkAGI2NGVhZTVlLTI5ZmQtNDU4NC1iN2Q2LTRiN2M5NTY4ZmY0YQBGAAAAAAB",
+            "approvedBy": {
+              "id": "user_2f9a",
+              "type": "human"
+            }
+          }
+        ],
+        "workProduct": {
+          "inputDigest": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+          "outputDigest": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+          "sources": [
+            "xero:invoice/INV-0419",
+            "xero:contact/northwind"
+          ]
+        },
+        "cost": {
+          "inputTokens": 2381,
+          "outputTokens": 412,
+          "estimatedUsd": 0.0143,
+          "attribution": "exact"
+        },
+        "outcome": {
+          "status": "succeeded"
+        }
+      },
+      "expectedLevel": 2,
+      "failingAtNextLevel": [
+        "/integrity"
+      ]
+    },
+    {
+      "name": "record-denied-write",
+      "description": "A write refused by policy before it reached approval.",
+      "type": "record",
+      "document": {
+        "spec": "action-provenance/1.0",
+        "id": "c4b1a9e2-0d3f-4e5a-8b7c-6d5e4f3a2b1c",
+        "correlationId": "corr_01J9X3R2A4B6C8D0E2F4G6H8J0",
+        "recordedAt": "2026-09-02T03:20:07.004Z",
+        "action": {
+          "kind": "tool_call",
+          "at": "2026-09-02T03:20:06.210Z",
+          "effect": "write",
+          "description": "Bulk-delete 1,240 contact records"
+        },
+        "principal": {
+          "id": "user_9b11",
+          "type": "human",
+          "display": "Contractor account",
+          "tenant": "org_acme"
+        },
+        "agent": {
+          "id": "agent_crm_cleanup",
+          "name": "CRM Cleanup",
+          "version": "2"
+        },
+        "model": {
+          "requested": "gpt-5",
+          "resolved": "gpt-5-2026-03-01",
+          "provider": "azure-openai"
+        },
+        "context": {
+          "tenant": "org_acme",
+          "workspace": "ws_sales"
+        },
+        "policy": {
+          "verdict": "deny",
+          "ref": "pol_destructive_bulk_ops",
+          "version": "1",
+          "evaluations": [
+            {
+              "evaluator": "gate",
+              "decision": "deny",
+              "code": "BULK_DELETE_THRESHOLD",
+              "reasons": [
+                "bulk deletion above 100 records requires an administrator"
+              ]
+            }
+          ]
+        },
+        "effects": [],
+        "outcome": {
+          "status": "denied",
+          "error": "Blocked by policy pol_destructive_bulk_ops"
+        }
+      },
+      "expectedLevel": 2,
+      "failingAtNextLevel": [
+        "/integrity"
+      ]
+    },
+    {
+      "name": "record-approved-write-sealed",
+      "description": "The approved write, sealed with the test key.",
+      "type": "record",
+      "document": {
+        "spec": "action-provenance/1.0",
+        "id": "8d0f2c1e-6f8b-4a2c-9c3e-2b6f1a9d4e70",
+        "correlationId": "corr_01J9X3Q0Z8K7M2N5P4R6S7T8V9",
+        "recordedAt": "2026-09-02T03:12:41.902Z",
+        "action": {
+          "kind": "tool_call",
+          "at": "2026-09-02T03:12:39.117Z",
+          "effect": "write",
+          "description": "Send the August aged-receivables reminder to Northwind"
+        },
+        "principal": {
+          "id": "user_2f9a",
+          "type": "human",
+          "display": "Sarah Chen",
+          "tenant": "org_acme"
+        },
+        "agent": {
+          "id": "agent_finance_ops",
+          "name": "Finance Operations",
+          "version": "7",
+          "bundleDigest": "sha256:3b7f1c0d9a2e5f4b8c6d7e1a0f9b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b",
+          "instructionsDigest": "sha256:9e1d2c3b4a5f6e7d8c9b0a1f2e3d4c5b6a7f8e9d0c1b2a3f4e5d6c7b8a9f0e1d"
+        },
+        "model": {
+          "requested": "gpt-5",
+          "resolved": "gpt-5-2026-03-01",
+          "provider": "azure-openai"
+        },
+        "context": {
+          "tenant": "org_acme",
+          "workspace": "ws_finance",
+          "session": "sess_7c2e",
+          "execution": "exec_44a1"
+        },
+        "policy": {
+          "verdict": "allow",
+          "ref": "pol_finance_outbound_email",
+          "version": "3",
+          "evaluations": [
+            {
+              "evaluator": "gate",
+              "decision": "allow",
+              "code": "OK"
+            },
+            {
+              "evaluator": "semantic",
+              "decision": "allow",
+              "confidence": 0.94,
+              "reasons": [
+                "recipient is an existing customer",
+                "amount below escalation threshold"
+              ]
+            }
+          ]
+        },
+        "approval": {
+          "required": true,
+          "decision": "approved",
+          "approver": {
+            "id": "user_2f9a",
+            "type": "human",
+            "display": "Sarah Chen"
+          },
+          "at": "2026-09-02T03:12:38.640Z",
+          "method": "ui",
+          "attestation": "att_01J9X3PZ9C4D6E8F0G2H4J6K8M"
+        },
+        "effects": [
+          {
+            "tool": "outlook.send_email",
+            "target": "microsoft-outlook",
+            "status": "succeeded",
+            "sideEffecting": true,
+            "argsDigest": "sha256:5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b",
+            "responseDigest": "sha256:c0ffee0000000000000000000000000000000000000000000000000000000001",
+            "resultRef": "AAMkAGI2NGVhZTVlLTI5ZmQtNDU4NC1iN2Q2LTRiN2M5NTY4ZmY0YQBGAAAAAAB",
+            "approvedBy": {
+              "id": "user_2f9a",
+              "type": "human"
+            }
+          }
+        ],
+        "workProduct": {
+          "inputDigest": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+          "outputDigest": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+          "sources": [
+            "xero:invoice/INV-0419",
+            "xero:contact/northwind"
+          ]
+        },
+        "cost": {
+          "inputTokens": 2381,
+          "outputTokens": 412,
+          "estimatedUsd": 0.0143,
+          "attribution": "exact"
+        },
+        "outcome": {
+          "status": "succeeded"
+        },
+        "integrity": {
+          "contentDigest": "sha256:9ea04f230d556628834d5fcc160086e1486d85245d81d96d7cade2b8c6805a52",
+          "mac": {
+            "alg": "hmac-sha256",
+            "keyId": "test-vector-key-1",
+            "value": "ky-8J6gkoYsvc4ZLMJ0Q2QZeb5lm79RqBgPtikx0pwk"
+          },
+          "sealedAt": "2026-09-02T04:00:00.000Z"
+        }
+      },
+      "expectedLevel": 3,
+      "failingAtNextLevel": []
+    },
+    {
+      "name": "record-sealed-then-changed",
+      "description": "Sealed, then changed: the content digest is no longer correct, so the record is not Level 3.",
+      "type": "record",
+      "document": {
+        "spec": "action-provenance/1.0",
+        "id": "8d0f2c1e-6f8b-4a2c-9c3e-2b6f1a9d4e70",
+        "correlationId": "corr_01J9X3Q0Z8K7M2N5P4R6S7T8V9",
+        "recordedAt": "2026-09-02T03:12:41.902Z",
+        "action": {
+          "kind": "tool_call",
+          "at": "2026-09-02T03:12:39.117Z",
+          "effect": "write",
+          "description": "Send the August aged-receivables reminder to Northwind"
+        },
+        "principal": {
+          "id": "user_2f9a",
+          "type": "human",
+          "display": "Sarah Chen",
+          "tenant": "org_acme"
+        },
+        "agent": {
+          "id": "agent_finance_ops",
+          "name": "Finance Operations",
+          "version": "7",
+          "bundleDigest": "sha256:3b7f1c0d9a2e5f4b8c6d7e1a0f9b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b",
+          "instructionsDigest": "sha256:9e1d2c3b4a5f6e7d8c9b0a1f2e3d4c5b6a7f8e9d0c1b2a3f4e5d6c7b8a9f0e1d"
+        },
+        "model": {
+          "requested": "gpt-5",
+          "resolved": "gpt-5-2026-03-01",
+          "provider": "azure-openai"
+        },
+        "context": {
+          "tenant": "org_acme",
+          "workspace": "ws_finance",
+          "session": "sess_7c2e",
+          "execution": "exec_44a1"
+        },
+        "policy": {
+          "verdict": "allow",
+          "ref": "pol_finance_outbound_email",
+          "version": "3",
+          "evaluations": [
+            {
+              "evaluator": "gate",
+              "decision": "allow",
+              "code": "OK"
+            },
+            {
+              "evaluator": "semantic",
+              "decision": "allow",
+              "confidence": 0.94,
+              "reasons": [
+                "recipient is an existing customer",
+                "amount below escalation threshold"
+              ]
+            }
+          ]
+        },
+        "approval": {
+          "required": true,
+          "decision": "approved",
+          "approver": {
+            "id": "user_2f9a",
+            "type": "human",
+            "display": "Sarah Chen"
+          },
+          "at": "2026-09-02T03:12:38.640Z",
+          "method": "ui",
+          "attestation": "att_01J9X3PZ9C4D6E8F0G2H4J6K8M"
+        },
+        "effects": [
+          {
+            "tool": "outlook.send_email",
+            "target": "microsoft-outlook",
+            "status": "succeeded",
+            "sideEffecting": true,
+            "argsDigest": "sha256:5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b",
+            "responseDigest": "sha256:c0ffee0000000000000000000000000000000000000000000000000000000001",
+            "resultRef": "AAMkAGI2NGVhZTVlLTI5ZmQtNDU4NC1iN2Q2LTRiN2M5NTY4ZmY0YQBGAAAAAAB",
+            "approvedBy": {
+              "id": "user_2f9a",
+              "type": "human"
+            }
+          }
+        ],
+        "workProduct": {
+          "inputDigest": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+          "outputDigest": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+          "sources": [
+            "xero:invoice/INV-0419",
+            "xero:contact/northwind"
+          ]
+        },
+        "cost": {
+          "inputTokens": 2381,
+          "outputTokens": 412,
+          "estimatedUsd": 0.0143,
+          "attribution": "exact"
+        },
+        "outcome": {
+          "status": "failed"
+        },
+        "integrity": {
+          "contentDigest": "sha256:9ea04f230d556628834d5fcc160086e1486d85245d81d96d7cade2b8c6805a52",
+          "mac": {
+            "alg": "hmac-sha256",
+            "keyId": "test-vector-key-1",
+            "value": "ky-8J6gkoYsvc4ZLMJ0Q2QZeb5lm79RqBgPtikx0pwk"
+          },
+          "sealedAt": "2026-09-02T04:00:00.000Z"
+        }
+      },
+      "expectedLevel": 2,
+      "failingAtNextLevel": [
+        "/integrity/contentDigest"
+      ]
+    },
+    {
+      "name": "record-digest-without-proof",
+      "description": "A correct content digest without a MAC or a signature.",
+      "type": "record",
+      "document": {
+        "spec": "action-provenance/1.0",
+        "id": "8d0f2c1e-6f8b-4a2c-9c3e-2b6f1a9d4e70",
+        "correlationId": "corr_01J9X3Q0Z8K7M2N5P4R6S7T8V9",
+        "recordedAt": "2026-09-02T03:12:41.902Z",
+        "action": {
+          "kind": "tool_call",
+          "at": "2026-09-02T03:12:39.117Z",
+          "effect": "write",
+          "description": "Send the August aged-receivables reminder to Northwind"
+        },
+        "principal": {
+          "id": "user_2f9a",
+          "type": "human",
+          "display": "Sarah Chen",
+          "tenant": "org_acme"
+        },
+        "agent": {
+          "id": "agent_finance_ops",
+          "name": "Finance Operations",
+          "version": "7",
+          "bundleDigest": "sha256:3b7f1c0d9a2e5f4b8c6d7e1a0f9b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b",
+          "instructionsDigest": "sha256:9e1d2c3b4a5f6e7d8c9b0a1f2e3d4c5b6a7f8e9d0c1b2a3f4e5d6c7b8a9f0e1d"
+        },
+        "model": {
+          "requested": "gpt-5",
+          "resolved": "gpt-5-2026-03-01",
+          "provider": "azure-openai"
+        },
+        "context": {
+          "tenant": "org_acme",
+          "workspace": "ws_finance",
+          "session": "sess_7c2e",
+          "execution": "exec_44a1"
+        },
+        "policy": {
+          "verdict": "allow",
+          "ref": "pol_finance_outbound_email",
+          "version": "3",
+          "evaluations": [
+            {
+              "evaluator": "gate",
+              "decision": "allow",
+              "code": "OK"
+            },
+            {
+              "evaluator": "semantic",
+              "decision": "allow",
+              "confidence": 0.94,
+              "reasons": [
+                "recipient is an existing customer",
+                "amount below escalation threshold"
+              ]
+            }
+          ]
+        },
+        "approval": {
+          "required": true,
+          "decision": "approved",
+          "approver": {
+            "id": "user_2f9a",
+            "type": "human",
+            "display": "Sarah Chen"
+          },
+          "at": "2026-09-02T03:12:38.640Z",
+          "method": "ui",
+          "attestation": "att_01J9X3PZ9C4D6E8F0G2H4J6K8M"
+        },
+        "effects": [
+          {
+            "tool": "outlook.send_email",
+            "target": "microsoft-outlook",
+            "status": "succeeded",
+            "sideEffecting": true,
+            "argsDigest": "sha256:5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b",
+            "responseDigest": "sha256:c0ffee0000000000000000000000000000000000000000000000000000000001",
+            "resultRef": "AAMkAGI2NGVhZTVlLTI5ZmQtNDU4NC1iN2Q2LTRiN2M5NTY4ZmY0YQBGAAAAAAB",
+            "approvedBy": {
+              "id": "user_2f9a",
+              "type": "human"
+            }
+          }
+        ],
+        "workProduct": {
+          "inputDigest": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+          "outputDigest": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+          "sources": [
+            "xero:invoice/INV-0419",
+            "xero:contact/northwind"
+          ]
+        },
+        "cost": {
+          "inputTokens": 2381,
+          "outputTokens": 412,
+          "estimatedUsd": 0.0143,
+          "attribution": "exact"
+        },
+        "outcome": {
+          "status": "succeeded"
+        },
+        "integrity": {
+          "contentDigest": "sha256:9ea04f230d556628834d5fcc160086e1486d85245d81d96d7cade2b8c6805a52",
+          "sealedAt": "2026-09-02T04:00:00.000Z"
+        }
+      },
+      "expectedLevel": 2,
+      "failingAtNextLevel": [
+        "/integrity"
+      ]
+    },
+    {
+      "name": "record-write-without-approver",
+      "description": "A succeeded, approved write that does not name the approver.",
+      "type": "record",
+      "document": {
+        "spec": "action-provenance/1.0",
+        "id": "8d0f2c1e-6f8b-4a2c-9c3e-2b6f1a9d4e70",
+        "correlationId": "corr_01J9X3Q0Z8K7M2N5P4R6S7T8V9",
+        "recordedAt": "2026-09-02T03:12:41.902Z",
+        "action": {
+          "kind": "tool_call",
+          "at": "2026-09-02T03:12:39.117Z",
+          "effect": "write",
+          "description": "Send the August aged-receivables reminder to Northwind"
+        },
+        "principal": {
+          "id": "user_2f9a",
+          "type": "human",
+          "display": "Sarah Chen",
+          "tenant": "org_acme"
+        },
+        "agent": {
+          "id": "agent_finance_ops",
+          "name": "Finance Operations",
+          "version": "7",
+          "bundleDigest": "sha256:3b7f1c0d9a2e5f4b8c6d7e1a0f9b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b",
+          "instructionsDigest": "sha256:9e1d2c3b4a5f6e7d8c9b0a1f2e3d4c5b6a7f8e9d0c1b2a3f4e5d6c7b8a9f0e1d"
+        },
+        "model": {
+          "requested": "gpt-5",
+          "resolved": "gpt-5-2026-03-01",
+          "provider": "azure-openai"
+        },
+        "context": {
+          "tenant": "org_acme",
+          "workspace": "ws_finance",
+          "session": "sess_7c2e",
+          "execution": "exec_44a1"
+        },
+        "policy": {
+          "verdict": "allow",
+          "ref": "pol_finance_outbound_email",
+          "version": "3",
+          "evaluations": [
+            {
+              "evaluator": "gate",
+              "decision": "allow",
+              "code": "OK"
+            },
+            {
+              "evaluator": "semantic",
+              "decision": "allow",
+              "confidence": 0.94,
+              "reasons": [
+                "recipient is an existing customer",
+                "amount below escalation threshold"
+              ]
+            }
+          ]
+        },
+        "approval": {
+          "required": true,
+          "decision": "approved",
+          "at": "2026-09-02T03:12:38.640Z",
+          "method": "ui",
+          "attestation": "att_01J9X3PZ9C4D6E8F0G2H4J6K8M"
+        },
+        "effects": [
+          {
+            "tool": "outlook.send_email",
+            "target": "microsoft-outlook",
+            "status": "succeeded",
+            "sideEffecting": true,
+            "argsDigest": "sha256:5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b",
+            "responseDigest": "sha256:c0ffee0000000000000000000000000000000000000000000000000000000001",
+            "resultRef": "AAMkAGI2NGVhZTVlLTI5ZmQtNDU4NC1iN2Q2LTRiN2M5NTY4ZmY0YQBGAAAAAAB",
+            "approvedBy": {
+              "id": "user_2f9a",
+              "type": "human"
+            }
+          }
+        ],
+        "workProduct": {
+          "inputDigest": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+          "outputDigest": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+          "sources": [
+            "xero:invoice/INV-0419",
+            "xero:contact/northwind"
+          ]
+        },
+        "cost": {
+          "inputTokens": 2381,
+          "outputTokens": 412,
+          "estimatedUsd": 0.0143,
+          "attribution": "exact"
+        },
+        "outcome": {
+          "status": "succeeded"
+        }
+      },
+      "expectedLevel": 1,
+      "failingAtNextLevel": [
+        "/approval/approver"
+      ]
+    },
+    {
+      "name": "record-write-without-approval",
+      "description": "A succeeded write with no approval member.",
+      "type": "record",
+      "document": {
+        "spec": "action-provenance/1.0",
+        "id": "8d0f2c1e-6f8b-4a2c-9c3e-2b6f1a9d4e70",
+        "correlationId": "corr_01J9X3Q0Z8K7M2N5P4R6S7T8V9",
+        "recordedAt": "2026-09-02T03:12:41.902Z",
+        "action": {
+          "kind": "tool_call",
+          "at": "2026-09-02T03:12:39.117Z",
+          "effect": "write",
+          "description": "Send the August aged-receivables reminder to Northwind"
+        },
+        "principal": {
+          "id": "user_2f9a",
+          "type": "human",
+          "display": "Sarah Chen",
+          "tenant": "org_acme"
+        },
+        "agent": {
+          "id": "agent_finance_ops",
+          "name": "Finance Operations",
+          "version": "7",
+          "bundleDigest": "sha256:3b7f1c0d9a2e5f4b8c6d7e1a0f9b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b",
+          "instructionsDigest": "sha256:9e1d2c3b4a5f6e7d8c9b0a1f2e3d4c5b6a7f8e9d0c1b2a3f4e5d6c7b8a9f0e1d"
+        },
+        "model": {
+          "requested": "gpt-5",
+          "resolved": "gpt-5-2026-03-01",
+          "provider": "azure-openai"
+        },
+        "context": {
+          "tenant": "org_acme",
+          "workspace": "ws_finance",
+          "session": "sess_7c2e",
+          "execution": "exec_44a1"
+        },
+        "policy": {
+          "verdict": "allow",
+          "ref": "pol_finance_outbound_email",
+          "version": "3",
+          "evaluations": [
+            {
+              "evaluator": "gate",
+              "decision": "allow",
+              "code": "OK"
+            },
+            {
+              "evaluator": "semantic",
+              "decision": "allow",
+              "confidence": 0.94,
+              "reasons": [
+                "recipient is an existing customer",
+                "amount below escalation threshold"
+              ]
+            }
+          ]
+        },
+        "effects": [
+          {
+            "tool": "outlook.send_email",
+            "target": "microsoft-outlook",
+            "status": "succeeded",
+            "sideEffecting": true,
+            "argsDigest": "sha256:5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b",
+            "responseDigest": "sha256:c0ffee0000000000000000000000000000000000000000000000000000000001",
+            "resultRef": "AAMkAGI2NGVhZTVlLTI5ZmQtNDU4NC1iN2Q2LTRiN2M5NTY4ZmY0YQBGAAAAAAB",
+            "approvedBy": {
+              "id": "user_2f9a",
+              "type": "human"
+            }
+          }
+        ],
+        "workProduct": {
+          "inputDigest": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+          "outputDigest": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+          "sources": [
+            "xero:invoice/INV-0419",
+            "xero:contact/northwind"
+          ]
+        },
+        "cost": {
+          "inputTokens": 2381,
+          "outputTokens": 412,
+          "estimatedUsd": 0.0143,
+          "attribution": "exact"
+        },
+        "outcome": {
+          "status": "succeeded"
+        }
+      },
+      "expectedLevel": 1,
+      "failingAtNextLevel": [
+        "/approval"
+      ]
+    },
+    {
+      "name": "record-auto-without-policy-ref",
+      "description": "An auto-approved write that does not cite the policy that granted autonomy.",
+      "type": "record",
+      "document": {
+        "spec": "action-provenance/1.0",
+        "id": "8d0f2c1e-6f8b-4a2c-9c3e-2b6f1a9d4e70",
+        "correlationId": "corr_01J9X3Q0Z8K7M2N5P4R6S7T8V9",
+        "recordedAt": "2026-09-02T03:12:41.902Z",
+        "action": {
+          "kind": "tool_call",
+          "at": "2026-09-02T03:12:39.117Z",
+          "effect": "write",
+          "description": "Send the August aged-receivables reminder to Northwind"
+        },
+        "principal": {
+          "id": "user_2f9a",
+          "type": "human",
+          "display": "Sarah Chen",
+          "tenant": "org_acme"
+        },
+        "agent": {
+          "id": "agent_finance_ops",
+          "name": "Finance Operations",
+          "version": "7",
+          "bundleDigest": "sha256:3b7f1c0d9a2e5f4b8c6d7e1a0f9b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b",
+          "instructionsDigest": "sha256:9e1d2c3b4a5f6e7d8c9b0a1f2e3d4c5b6a7f8e9d0c1b2a3f4e5d6c7b8a9f0e1d"
+        },
+        "model": {
+          "requested": "gpt-5",
+          "resolved": "gpt-5-2026-03-01",
+          "provider": "azure-openai"
+        },
+        "context": {
+          "tenant": "org_acme",
+          "workspace": "ws_finance",
+          "session": "sess_7c2e",
+          "execution": "exec_44a1"
+        },
+        "policy": {
+          "verdict": "allow",
+          "version": "3",
+          "evaluations": [
+            {
+              "evaluator": "gate",
+              "decision": "allow",
+              "code": "OK"
+            },
+            {
+              "evaluator": "semantic",
+              "decision": "allow",
+              "confidence": 0.94,
+              "reasons": [
+                "recipient is an existing customer",
+                "amount below escalation threshold"
+              ]
+            }
+          ]
+        },
+        "approval": {
+          "required": true,
+          "decision": "auto"
+        },
+        "effects": [
+          {
+            "tool": "outlook.send_email",
+            "target": "microsoft-outlook",
+            "status": "succeeded",
+            "sideEffecting": true,
+            "argsDigest": "sha256:5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b",
+            "responseDigest": "sha256:c0ffee0000000000000000000000000000000000000000000000000000000001",
+            "resultRef": "AAMkAGI2NGVhZTVlLTI5ZmQtNDU4NC1iN2Q2LTRiN2M5NTY4ZmY0YQBGAAAAAAB",
+            "approvedBy": {
+              "id": "user_2f9a",
+              "type": "human"
+            }
+          }
+        ],
+        "workProduct": {
+          "inputDigest": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+          "outputDigest": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+          "sources": [
+            "xero:invoice/INV-0419",
+            "xero:contact/northwind"
+          ]
+        },
+        "cost": {
+          "inputTokens": 2381,
+          "outputTokens": 412,
+          "estimatedUsd": 0.0143,
+          "attribution": "exact"
+        },
+        "outcome": {
+          "status": "succeeded"
+        }
+      },
+      "expectedLevel": 1,
+      "failingAtNextLevel": [
+        "/policy/ref"
+      ]
+    },
+    {
+      "name": "record-auto-with-policy-ref",
+      "description": "An auto-approved write under a cited policy.",
+      "type": "record",
+      "document": {
+        "spec": "action-provenance/1.0",
+        "id": "8d0f2c1e-6f8b-4a2c-9c3e-2b6f1a9d4e70",
+        "correlationId": "corr_01J9X3Q0Z8K7M2N5P4R6S7T8V9",
+        "recordedAt": "2026-09-02T03:12:41.902Z",
+        "action": {
+          "kind": "tool_call",
+          "at": "2026-09-02T03:12:39.117Z",
+          "effect": "write",
+          "description": "Send the August aged-receivables reminder to Northwind"
+        },
+        "principal": {
+          "id": "user_2f9a",
+          "type": "human",
+          "display": "Sarah Chen",
+          "tenant": "org_acme"
+        },
+        "agent": {
+          "id": "agent_finance_ops",
+          "name": "Finance Operations",
+          "version": "7",
+          "bundleDigest": "sha256:3b7f1c0d9a2e5f4b8c6d7e1a0f9b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b",
+          "instructionsDigest": "sha256:9e1d2c3b4a5f6e7d8c9b0a1f2e3d4c5b6a7f8e9d0c1b2a3f4e5d6c7b8a9f0e1d"
+        },
+        "model": {
+          "requested": "gpt-5",
+          "resolved": "gpt-5-2026-03-01",
+          "provider": "azure-openai"
+        },
+        "context": {
+          "tenant": "org_acme",
+          "workspace": "ws_finance",
+          "session": "sess_7c2e",
+          "execution": "exec_44a1"
+        },
+        "policy": {
+          "verdict": "allow",
+          "ref": "pol_finance_outbound_email",
+          "version": "3",
+          "evaluations": [
+            {
+              "evaluator": "gate",
+              "decision": "allow",
+              "code": "OK"
+            },
+            {
+              "evaluator": "semantic",
+              "decision": "allow",
+              "confidence": 0.94,
+              "reasons": [
+                "recipient is an existing customer",
+                "amount below escalation threshold"
+              ]
+            }
+          ]
+        },
+        "approval": {
+          "required": true,
+          "decision": "auto"
+        },
+        "effects": [
+          {
+            "tool": "outlook.send_email",
+            "target": "microsoft-outlook",
+            "status": "succeeded",
+            "sideEffecting": true,
+            "argsDigest": "sha256:5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b",
+            "responseDigest": "sha256:c0ffee0000000000000000000000000000000000000000000000000000000001",
+            "resultRef": "AAMkAGI2NGVhZTVlLTI5ZmQtNDU4NC1iN2Q2LTRiN2M5NTY4ZmY0YQBGAAAAAAB",
+            "approvedBy": {
+              "id": "user_2f9a",
+              "type": "human"
+            }
+          }
+        ],
+        "workProduct": {
+          "inputDigest": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+          "outputDigest": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+          "sources": [
+            "xero:invoice/INV-0419",
+            "xero:contact/northwind"
+          ]
+        },
+        "cost": {
+          "inputTokens": 2381,
+          "outputTokens": 412,
+          "estimatedUsd": 0.0143,
+          "attribution": "exact"
+        },
+        "outcome": {
+          "status": "succeeded"
+        }
+      },
+      "expectedLevel": 2,
+      "failingAtNextLevel": [
+        "/integrity"
+      ]
+    },
+    {
+      "name": "record-deny-verdict-succeeded-write",
+      "description": "A deny verdict alongside a succeeded write.",
+      "type": "record",
+      "document": {
+        "spec": "action-provenance/1.0",
+        "id": "c4b1a9e2-0d3f-4e5a-8b7c-6d5e4f3a2b1c",
+        "correlationId": "corr_01J9X3R2A4B6C8D0E2F4G6H8J0",
+        "recordedAt": "2026-09-02T03:20:07.004Z",
+        "action": {
+          "kind": "tool_call",
+          "at": "2026-09-02T03:20:06.210Z",
+          "effect": "write",
+          "description": "Bulk-delete 1,240 contact records"
+        },
+        "principal": {
+          "id": "user_9b11",
+          "type": "human",
+          "display": "Contractor account",
+          "tenant": "org_acme"
+        },
+        "agent": {
+          "id": "agent_crm_cleanup",
+          "name": "CRM Cleanup",
+          "version": "2"
+        },
+        "model": {
+          "requested": "gpt-5",
+          "resolved": "gpt-5-2026-03-01",
+          "provider": "azure-openai"
+        },
+        "context": {
+          "tenant": "org_acme",
+          "workspace": "ws_sales"
+        },
+        "policy": {
+          "verdict": "deny",
+          "ref": "pol_destructive_bulk_ops",
+          "version": "1",
+          "evaluations": [
+            {
+              "evaluator": "gate",
+              "decision": "deny",
+              "code": "BULK_DELETE_THRESHOLD",
+              "reasons": [
+                "bulk deletion above 100 records requires an administrator"
+              ]
+            }
+          ]
+        },
+        "effects": [
+          {
+            "tool": "crm.delete_contacts",
+            "target": "crm",
+            "status": "succeeded",
+            "sideEffecting": true,
+            "resultRef": "job_1"
+          }
+        ],
+        "outcome": {
+          "status": "succeeded"
+        }
+      },
+      "expectedLevel": 1,
+      "failingAtNextLevel": [
+        "/approval",
+        "/outcome/status"
+      ]
+    },
+    {
+      "name": "record-side-effect-without-result",
+      "description": "A succeeded side effect without responseDigest or resultRef.",
+      "type": "record",
+      "document": {
+        "spec": "action-provenance/1.0",
+        "id": "8d0f2c1e-6f8b-4a2c-9c3e-2b6f1a9d4e70",
+        "correlationId": "corr_01J9X3Q0Z8K7M2N5P4R6S7T8V9",
+        "recordedAt": "2026-09-02T03:12:41.902Z",
+        "action": {
+          "kind": "tool_call",
+          "at": "2026-09-02T03:12:39.117Z",
+          "effect": "write",
+          "description": "Send the August aged-receivables reminder to Northwind"
+        },
+        "principal": {
+          "id": "user_2f9a",
+          "type": "human",
+          "display": "Sarah Chen",
+          "tenant": "org_acme"
+        },
+        "agent": {
+          "id": "agent_finance_ops",
+          "name": "Finance Operations",
+          "version": "7",
+          "bundleDigest": "sha256:3b7f1c0d9a2e5f4b8c6d7e1a0f9b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b",
+          "instructionsDigest": "sha256:9e1d2c3b4a5f6e7d8c9b0a1f2e3d4c5b6a7f8e9d0c1b2a3f4e5d6c7b8a9f0e1d"
+        },
+        "model": {
+          "requested": "gpt-5",
+          "resolved": "gpt-5-2026-03-01",
+          "provider": "azure-openai"
+        },
+        "context": {
+          "tenant": "org_acme",
+          "workspace": "ws_finance",
+          "session": "sess_7c2e",
+          "execution": "exec_44a1"
+        },
+        "policy": {
+          "verdict": "allow",
+          "ref": "pol_finance_outbound_email",
+          "version": "3",
+          "evaluations": [
+            {
+              "evaluator": "gate",
+              "decision": "allow",
+              "code": "OK"
+            },
+            {
+              "evaluator": "semantic",
+              "decision": "allow",
+              "confidence": 0.94,
+              "reasons": [
+                "recipient is an existing customer",
+                "amount below escalation threshold"
+              ]
+            }
+          ]
+        },
+        "approval": {
+          "required": true,
+          "decision": "approved",
+          "approver": {
+            "id": "user_2f9a",
+            "type": "human",
+            "display": "Sarah Chen"
+          },
+          "at": "2026-09-02T03:12:38.640Z",
+          "method": "ui",
+          "attestation": "att_01J9X3PZ9C4D6E8F0G2H4J6K8M"
+        },
+        "effects": [
+          {
+            "tool": "outlook.send_email",
+            "target": "microsoft-outlook",
+            "status": "succeeded",
+            "sideEffecting": true,
+            "argsDigest": "sha256:5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b",
+            "approvedBy": {
+              "id": "user_2f9a",
+              "type": "human"
+            }
+          }
+        ],
+        "workProduct": {
+          "inputDigest": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+          "outputDigest": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+          "sources": [
+            "xero:invoice/INV-0419",
+            "xero:contact/northwind"
+          ]
+        },
+        "cost": {
+          "inputTokens": 2381,
+          "outputTokens": 412,
+          "estimatedUsd": 0.0143,
+          "attribution": "exact"
+        },
+        "outcome": {
+          "status": "succeeded"
+        }
+      },
+      "expectedLevel": 1,
+      "failingAtNextLevel": [
+        "/effects/0"
+      ]
+    },
+    {
+      "name": "record-without-policy",
+      "description": "A record without a policy verdict.",
+      "type": "record",
+      "document": {
+        "spec": "action-provenance/1.0",
+        "id": "5e6f7a8b-9c0d-4e1f-a2b3-c4d5e6f7a8b9",
+        "correlationId": "corr_01J9X3S4C6D8E0F2G4H6J8K0M2",
+        "recordedAt": "2026-09-02T03:25:51.330Z",
+        "action": {
+          "kind": "chat_turn",
+          "at": "2026-09-02T03:25:44.008Z",
+          "effect": "read",
+          "description": "Summarise open opportunities closing this quarter"
+        },
+        "principal": {
+          "id": "user_2f9a",
+          "type": "human",
+          "tenant": "org_acme"
+        },
+        "agent": {
+          "id": "agent_sales_analyst",
+          "name": "Sales Analyst",
+          "version": "4"
+        },
+        "model": {
+          "requested": "claude-opus-5",
+          "resolved": "claude-opus-5",
+          "provider": "anthropic"
+        },
+        "approval": {
+          "required": false,
+          "decision": "not_required"
+        },
+        "effects": [
+          {
+            "tool": "salesforce.query",
+            "target": "salesforce",
+            "status": "succeeded",
+            "sideEffecting": false,
+            "argsDigest": "sha256:abababababababababababababababababababababababababababababababab"
+          }
+        ],
+        "workProduct": {
+          "outputDigest": "sha256:3333333333333333333333333333333333333333333333333333333333333333",
+          "sources": [
+            "salesforce:report/Q3-pipeline"
+          ]
+        },
+        "cost": {
+          "inputTokens": 5120,
+          "outputTokens": 880,
+          "attribution": "approximate"
+        },
+        "outcome": {
+          "status": "succeeded"
+        }
+      },
+      "expectedLevel": 1,
+      "failingAtNextLevel": [
+        "/policy"
+      ]
+    },
+    {
+      "name": "record-extension-kind",
+      "description": "An extension action kind with the x- prefix.",
+      "type": "record",
+      "document": {
+        "spec": "action-provenance/1.0",
+        "id": "5e6f7a8b-9c0d-4e1f-a2b3-c4d5e6f7a8b9",
+        "correlationId": "corr_01J9X3S4C6D8E0F2G4H6J8K0M2",
+        "recordedAt": "2026-09-02T03:25:51.330Z",
+        "action": {
+          "kind": "x-example_report",
+          "at": "2026-09-02T03:25:44.008Z",
+          "effect": "read",
+          "description": "Summarise open opportunities closing this quarter"
+        },
+        "principal": {
+          "id": "user_2f9a",
+          "type": "human",
+          "tenant": "org_acme"
+        },
+        "agent": {
+          "id": "agent_sales_analyst",
+          "name": "Sales Analyst",
+          "version": "4"
+        },
+        "model": {
+          "requested": "claude-opus-5",
+          "resolved": "claude-opus-5",
+          "provider": "anthropic"
+        },
+        "policy": {
+          "verdict": "allow",
+          "ref": "pol_default_read",
+          "version": "1"
+        },
+        "approval": {
+          "required": false,
+          "decision": "not_required"
+        },
+        "effects": [
+          {
+            "tool": "salesforce.query",
+            "target": "salesforce",
+            "status": "succeeded",
+            "sideEffecting": false,
+            "argsDigest": "sha256:abababababababababababababababababababababababababababababababab"
+          }
+        ],
+        "workProduct": {
+          "outputDigest": "sha256:3333333333333333333333333333333333333333333333333333333333333333",
+          "sources": [
+            "salesforce:report/Q3-pipeline"
+          ]
+        },
+        "cost": {
+          "inputTokens": 5120,
+          "outputTokens": 880,
+          "attribution": "approximate"
+        },
+        "outcome": {
+          "status": "succeeded"
+        }
+      },
+      "expectedLevel": 2,
+      "failingAtNextLevel": [
+        "/integrity"
+      ]
+    },
+    {
+      "name": "record-unregistered-kind",
+      "description": "An action kind that is neither registered nor x- prefixed.",
+      "type": "record",
+      "document": {
+        "spec": "action-provenance/1.0",
+        "id": "5e6f7a8b-9c0d-4e1f-a2b3-c4d5e6f7a8b9",
+        "correlationId": "corr_01J9X3S4C6D8E0F2G4H6J8K0M2",
+        "recordedAt": "2026-09-02T03:25:51.330Z",
+        "action": {
+          "kind": "example_report",
+          "at": "2026-09-02T03:25:44.008Z",
+          "effect": "read",
+          "description": "Summarise open opportunities closing this quarter"
+        },
+        "principal": {
+          "id": "user_2f9a",
+          "type": "human",
+          "tenant": "org_acme"
+        },
+        "agent": {
+          "id": "agent_sales_analyst",
+          "name": "Sales Analyst",
+          "version": "4"
+        },
+        "model": {
+          "requested": "claude-opus-5",
+          "resolved": "claude-opus-5",
+          "provider": "anthropic"
+        },
+        "policy": {
+          "verdict": "allow",
+          "ref": "pol_default_read",
+          "version": "1"
+        },
+        "approval": {
+          "required": false,
+          "decision": "not_required"
+        },
+        "effects": [
+          {
+            "tool": "salesforce.query",
+            "target": "salesforce",
+            "status": "succeeded",
+            "sideEffecting": false,
+            "argsDigest": "sha256:abababababababababababababababababababababababababababababababab"
+          }
+        ],
+        "workProduct": {
+          "outputDigest": "sha256:3333333333333333333333333333333333333333333333333333333333333333",
+          "sources": [
+            "salesforce:report/Q3-pipeline"
+          ]
+        },
+        "cost": {
+          "inputTokens": 5120,
+          "outputTokens": 880,
+          "attribution": "approximate"
+        },
+        "outcome": {
+          "status": "succeeded"
+        }
+      },
+      "expectedLevel": 0,
+      "failingAtNextLevel": [
+        "/action/kind"
+      ]
+    },
+    {
+      "name": "record-without-principal",
+      "description": "A record without a principal.",
+      "type": "record",
+      "document": {
+        "spec": "action-provenance/1.0",
+        "id": "5e6f7a8b-9c0d-4e1f-a2b3-c4d5e6f7a8b9",
+        "correlationId": "corr_01J9X3S4C6D8E0F2G4H6J8K0M2",
+        "recordedAt": "2026-09-02T03:25:51.330Z",
+        "action": {
+          "kind": "chat_turn",
+          "at": "2026-09-02T03:25:44.008Z",
+          "effect": "read",
+          "description": "Summarise open opportunities closing this quarter"
+        },
+        "agent": {
+          "id": "agent_sales_analyst",
+          "name": "Sales Analyst",
+          "version": "4"
+        },
+        "model": {
+          "requested": "claude-opus-5",
+          "resolved": "claude-opus-5",
+          "provider": "anthropic"
+        },
+        "policy": {
+          "verdict": "allow",
+          "ref": "pol_default_read",
+          "version": "1"
+        },
+        "approval": {
+          "required": false,
+          "decision": "not_required"
+        },
+        "effects": [
+          {
+            "tool": "salesforce.query",
+            "target": "salesforce",
+            "status": "succeeded",
+            "sideEffecting": false,
+            "argsDigest": "sha256:abababababababababababababababababababababababababababababababab"
+          }
+        ],
+        "workProduct": {
+          "outputDigest": "sha256:3333333333333333333333333333333333333333333333333333333333333333",
+          "sources": [
+            "salesforce:report/Q3-pipeline"
+          ]
+        },
+        "cost": {
+          "inputTokens": 5120,
+          "outputTokens": 880,
+          "attribution": "approximate"
+        },
+        "outcome": {
+          "status": "succeeded"
+        }
+      },
+      "expectedLevel": 0,
+      "failingAtNextLevel": [
+        "/principal"
+      ]
+    },
+    {
+      "name": "record-bad-digest-syntax",
+      "description": "A digest that is not sha256: followed by 64 lowercase hexadecimal characters.",
+      "type": "record",
+      "document": {
+        "spec": "action-provenance/1.0",
+        "id": "5e6f7a8b-9c0d-4e1f-a2b3-c4d5e6f7a8b9",
+        "correlationId": "corr_01J9X3S4C6D8E0F2G4H6J8K0M2",
+        "recordedAt": "2026-09-02T03:25:51.330Z",
+        "action": {
+          "kind": "chat_turn",
+          "at": "2026-09-02T03:25:44.008Z",
+          "effect": "read",
+          "description": "Summarise open opportunities closing this quarter"
+        },
+        "principal": {
+          "id": "user_2f9a",
+          "type": "human",
+          "tenant": "org_acme"
+        },
+        "agent": {
+          "id": "agent_sales_analyst",
+          "name": "Sales Analyst",
+          "version": "4"
+        },
+        "model": {
+          "requested": "claude-opus-5",
+          "resolved": "claude-opus-5",
+          "provider": "anthropic"
+        },
+        "policy": {
+          "verdict": "allow",
+          "ref": "pol_default_read",
+          "version": "1"
+        },
+        "approval": {
+          "required": false,
+          "decision": "not_required"
+        },
+        "effects": [
+          {
+            "tool": "salesforce.query",
+            "target": "salesforce",
+            "status": "succeeded",
+            "sideEffecting": false,
+            "argsDigest": "md5:0cc175b9c0f1b6a831c399e269772661"
+          }
+        ],
+        "workProduct": {
+          "outputDigest": "sha256:3333333333333333333333333333333333333333333333333333333333333333",
+          "sources": [
+            "salesforce:report/Q3-pipeline"
+          ]
+        },
+        "cost": {
+          "inputTokens": 5120,
+          "outputTokens": 880,
+          "attribution": "approximate"
+        },
+        "outcome": {
+          "status": "succeeded"
+        }
+      },
+      "expectedLevel": 0,
+      "failingAtNextLevel": [
+        "/effects/0/argsDigest"
+      ]
+    },
+    {
+      "name": "attestation-single",
+      "description": "A single-scope human approval, unsealed.",
+      "type": "attestation",
+      "document": {
+        "spec": "action-approval/1.0",
+        "id": "att_01J9X3PZ9C4D6E8F0G2H4J6K8M",
+        "correlationId": "corr_01J9X3Q0Z8K7M2N5P4R6S7T8V9",
+        "proposal": {
+          "kind": "tool_call",
+          "tool": "outlook.send_email",
+          "target": "microsoft-outlook",
+          "effect": "write",
+          "argsDigest": "sha256:5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b",
+          "summary": "Send the August aged-receivables reminder to accounts@northwind.example (1 attachment, INV-0419)"
+        },
+        "principal": {
+          "id": "user_2f9a",
+          "type": "human",
+          "display": "Sarah Chen",
+          "tenant": "org_acme"
+        },
+        "approver": {
+          "id": "user_2f9a",
+          "type": "human",
+          "display": "Sarah Chen",
+          "tenant": "org_acme"
+        },
+        "decision": "approved",
+        "scope": "single",
+        "decidedAt": "2026-09-02T03:12:38.640Z",
+        "method": "ui",
+        "policy": {
+          "ref": "pol_finance_outbound_email",
+          "version": "3"
+        }
+      },
+      "expectedLevel": 2,
+      "failingAtNextLevel": [
+        "/integrity"
+      ]
+    },
+    {
+      "name": "attestation-single-sealed",
+      "description": "The single-scope approval, sealed with the test key.",
+      "type": "attestation",
+      "document": {
+        "spec": "action-approval/1.0",
+        "id": "att_01J9X3PZ9C4D6E8F0G2H4J6K8M",
+        "correlationId": "corr_01J9X3Q0Z8K7M2N5P4R6S7T8V9",
+        "proposal": {
+          "kind": "tool_call",
+          "tool": "outlook.send_email",
+          "target": "microsoft-outlook",
+          "effect": "write",
+          "argsDigest": "sha256:5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b",
+          "summary": "Send the August aged-receivables reminder to accounts@northwind.example (1 attachment, INV-0419)"
+        },
+        "principal": {
+          "id": "user_2f9a",
+          "type": "human",
+          "display": "Sarah Chen",
+          "tenant": "org_acme"
+        },
+        "approver": {
+          "id": "user_2f9a",
+          "type": "human",
+          "display": "Sarah Chen",
+          "tenant": "org_acme"
+        },
+        "decision": "approved",
+        "scope": "single",
+        "decidedAt": "2026-09-02T03:12:38.640Z",
+        "method": "ui",
+        "policy": {
+          "ref": "pol_finance_outbound_email",
+          "version": "3"
+        },
+        "integrity": {
+          "contentDigest": "sha256:38527b5116d653f3b5573ca2543e5120810296f8bb21593b20751cc4044bff63",
+          "mac": {
+            "alg": "hmac-sha256",
+            "keyId": "test-vector-key-1",
+            "value": "JY9QJf0otbFVTfX--MXtbmLMgmVE4NtBiJhu3GhfyMo"
+          },
+          "sealedAt": "2026-09-02T04:00:00.000Z"
+        }
+      },
+      "expectedLevel": 3,
+      "failingAtNextLevel": []
+    },
+    {
+      "name": "attestation-sealed-then-changed",
+      "description": "Sealed, then the approved arguments digest replaced.",
+      "type": "attestation",
+      "document": {
+        "spec": "action-approval/1.0",
+        "id": "att_01J9X3PZ9C4D6E8F0G2H4J6K8M",
+        "correlationId": "corr_01J9X3Q0Z8K7M2N5P4R6S7T8V9",
+        "proposal": {
+          "kind": "tool_call",
+          "tool": "outlook.send_email",
+          "target": "microsoft-outlook",
+          "effect": "write",
+          "argsDigest": "sha256:ad790420e4915d2150d2aecf33ccdb2f1eb20ebc8aa97d3676abe46f31e701be",
+          "summary": "Send the August aged-receivables reminder to accounts@northwind.example (1 attachment, INV-0419)"
+        },
+        "principal": {
+          "id": "user_2f9a",
+          "type": "human",
+          "display": "Sarah Chen",
+          "tenant": "org_acme"
+        },
+        "approver": {
+          "id": "user_2f9a",
+          "type": "human",
+          "display": "Sarah Chen",
+          "tenant": "org_acme"
+        },
+        "decision": "approved",
+        "scope": "single",
+        "decidedAt": "2026-09-02T03:12:38.640Z",
+        "method": "ui",
+        "policy": {
+          "ref": "pol_finance_outbound_email",
+          "version": "3"
+        },
+        "integrity": {
+          "contentDigest": "sha256:38527b5116d653f3b5573ca2543e5120810296f8bb21593b20751cc4044bff63",
+          "mac": {
+            "alg": "hmac-sha256",
+            "keyId": "test-vector-key-1",
+            "value": "JY9QJf0otbFVTfX--MXtbmLMgmVE4NtBiJhu3GhfyMo"
+          },
+          "sealedAt": "2026-09-02T04:00:00.000Z"
+        }
+      },
+      "expectedLevel": 2,
+      "failingAtNextLevel": [
+        "/integrity/contentDigest"
+      ]
+    },
+    {
+      "name": "attestation-standing",
+      "description": "A standing grant with matchOn, an expiry and a use limit.",
+      "type": "attestation",
+      "document": {
+        "spec": "action-approval/1.0",
+        "id": "att_01J9X4A0B2C4D6E8F0G2H4J6K8",
+        "correlationId": "sess_7c2e",
+        "proposal": {
+          "kind": "tool_call",
+          "tool": "xero.create_invoice_draft",
+          "target": "xero",
+          "effect": "write",
+          "argsDigest": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+          "summary": "Always allow this agent to create draft invoices in Xero for this session"
+        },
+        "principal": {
+          "id": "user_2f9a",
+          "type": "human",
+          "tenant": "org_acme"
+        },
+        "approver": {
+          "id": "user_2f9a",
+          "type": "human",
+          "display": "Sarah Chen",
+          "tenant": "org_acme"
+        },
+        "decision": "approved",
+        "scope": "standing",
+        "constraints": {
+          "matchOn": [
+            "tool",
+            "target",
+            "effect"
+          ],
+          "expiresAt": "2026-09-02T11:12:38.640Z",
+          "maxUses": 50,
+          "conditions": [
+            "drafts only; publishing an invoice still requires single approval"
+          ]
+        },
+        "decidedAt": "2026-09-02T03:12:38.640Z",
+        "method": "ui",
+        "policy": {
+          "ref": "pol_finance_xero_drafts",
+          "version": "2"
+        },
+        "reason": "Month-end run: batch of draft invoices for review"
+      },
+      "expectedLevel": 2,
+      "failingAtNextLevel": [
+        "/integrity"
+      ]
+    },
+    {
+      "name": "attestation-standing-unbounded",
+      "description": "A standing grant with neither expiresAt nor maxUses.",
+      "type": "attestation",
+      "document": {
+        "spec": "action-approval/1.0",
+        "id": "att_01J9X4A0B2C4D6E8F0G2H4J6K8",
+        "correlationId": "sess_7c2e",
+        "proposal": {
+          "kind": "tool_call",
+          "tool": "xero.create_invoice_draft",
+          "target": "xero",
+          "effect": "write",
+          "argsDigest": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+          "summary": "Always allow this agent to create draft invoices in Xero for this session"
+        },
+        "principal": {
+          "id": "user_2f9a",
+          "type": "human",
+          "tenant": "org_acme"
+        },
+        "approver": {
+          "id": "user_2f9a",
+          "type": "human",
+          "display": "Sarah Chen",
+          "tenant": "org_acme"
+        },
+        "decision": "approved",
+        "scope": "standing",
+        "constraints": {
+          "matchOn": [
+            "tool",
+            "target",
+            "effect"
+          ],
+          "conditions": [
+            "drafts only; publishing an invoice still requires single approval"
+          ]
+        },
+        "decidedAt": "2026-09-02T03:12:38.640Z",
+        "method": "ui",
+        "policy": {
+          "ref": "pol_finance_xero_drafts",
+          "version": "2"
+        },
+        "reason": "Month-end run: batch of draft invoices for review"
+      },
+      "expectedLevel": 1,
+      "failingAtNextLevel": [
+        "/constraints"
+      ]
+    },
+    {
+      "name": "attestation-session-without-matchOn",
+      "description": "A session grant that does not say what it matches on.",
+      "type": "attestation",
+      "document": {
+        "spec": "action-approval/1.0",
+        "id": "att_01J9X4A0B2C4D6E8F0G2H4J6K8",
+        "correlationId": "sess_7c2e",
+        "proposal": {
+          "kind": "tool_call",
+          "tool": "xero.create_invoice_draft",
+          "target": "xero",
+          "effect": "write",
+          "argsDigest": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+          "summary": "Always allow this agent to create draft invoices in Xero for this session"
+        },
+        "principal": {
+          "id": "user_2f9a",
+          "type": "human",
+          "tenant": "org_acme"
+        },
+        "approver": {
+          "id": "user_2f9a",
+          "type": "human",
+          "display": "Sarah Chen",
+          "tenant": "org_acme"
+        },
+        "decision": "approved",
+        "scope": "session",
+        "constraints": {
+          "expiresAt": "2026-09-02T11:12:38.640Z",
+          "maxUses": 50,
+          "conditions": [
+            "drafts only; publishing an invoice still requires single approval"
+          ]
+        },
+        "decidedAt": "2026-09-02T03:12:38.640Z",
+        "method": "ui",
+        "policy": {
+          "ref": "pol_finance_xero_drafts",
+          "version": "2"
+        },
+        "reason": "Month-end run: batch of draft invoices for review"
+      },
+      "expectedLevel": 1,
+      "failingAtNextLevel": [
+        "/constraints/matchOn"
+      ]
+    },
+    {
+      "name": "attestation-approved-by-service",
+      "description": "An approved decision made by a service party.",
+      "type": "attestation",
+      "document": {
+        "spec": "action-approval/1.0",
+        "id": "att_01J9X3PZ9C4D6E8F0G2H4J6K8M",
+        "correlationId": "corr_01J9X3Q0Z8K7M2N5P4R6S7T8V9",
+        "proposal": {
+          "kind": "tool_call",
+          "tool": "outlook.send_email",
+          "target": "microsoft-outlook",
+          "effect": "write",
+          "argsDigest": "sha256:5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b",
+          "summary": "Send the August aged-receivables reminder to accounts@northwind.example (1 attachment, INV-0419)"
+        },
+        "principal": {
+          "id": "user_2f9a",
+          "type": "human",
+          "display": "Sarah Chen",
+          "tenant": "org_acme"
+        },
+        "approver": {
+          "id": "policy-engine",
+          "type": "service"
+        },
+        "decision": "approved",
+        "scope": "single",
+        "decidedAt": "2026-09-02T03:12:38.640Z",
+        "method": "ui",
+        "policy": {
+          "ref": "pol_finance_outbound_email",
+          "version": "3"
+        }
+      },
+      "expectedLevel": 1,
+      "failingAtNextLevel": [
+        "/approver/type"
+      ]
+    },
+    {
+      "name": "attestation-auto-without-policy",
+      "description": "An auto decision that does not cite a policy.",
+      "type": "attestation",
+      "document": {
+        "spec": "action-approval/1.0",
+        "id": "att_01J9X3PZ9C4D6E8F0G2H4J6K8M",
+        "correlationId": "corr_01J9X3Q0Z8K7M2N5P4R6S7T8V9",
+        "proposal": {
+          "kind": "tool_call",
+          "tool": "outlook.send_email",
+          "target": "microsoft-outlook",
+          "effect": "write",
+          "argsDigest": "sha256:5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b",
+          "summary": "Send the August aged-receivables reminder to accounts@northwind.example (1 attachment, INV-0419)"
+        },
+        "principal": {
+          "id": "user_2f9a",
+          "type": "human",
+          "display": "Sarah Chen",
+          "tenant": "org_acme"
+        },
+        "approver": {
+          "id": "policy-engine",
+          "type": "service"
+        },
+        "decision": "auto",
+        "scope": "single",
+        "decidedAt": "2026-09-02T03:12:38.640Z",
+        "method": "ui"
+      },
+      "expectedLevel": 1,
+      "failingAtNextLevel": [
+        "/policy/ref"
+      ]
+    },
+    {
+      "name": "attestation-without-argsDigest",
+      "description": "A proposal that does not bind the arguments.",
+      "type": "attestation",
+      "document": {
+        "spec": "action-approval/1.0",
+        "id": "att_01J9X3PZ9C4D6E8F0G2H4J6K8M",
+        "correlationId": "corr_01J9X3Q0Z8K7M2N5P4R6S7T8V9",
+        "proposal": {
+          "kind": "tool_call",
+          "tool": "outlook.send_email",
+          "target": "microsoft-outlook",
+          "effect": "write",
+          "summary": "Send the August aged-receivables reminder to accounts@northwind.example (1 attachment, INV-0419)"
+        },
+        "principal": {
+          "id": "user_2f9a",
+          "type": "human",
+          "display": "Sarah Chen",
+          "tenant": "org_acme"
+        },
+        "approver": {
+          "id": "user_2f9a",
+          "type": "human",
+          "display": "Sarah Chen",
+          "tenant": "org_acme"
+        },
+        "decision": "approved",
+        "scope": "single",
+        "decidedAt": "2026-09-02T03:12:38.640Z",
+        "method": "ui",
+        "policy": {
+          "ref": "pol_finance_outbound_email",
+          "version": "3"
+        }
+      },
+      "expectedLevel": 0,
+      "failingAtNextLevel": [
+        "/proposal/argsDigest"
+      ]
+    }
+  ]
+}

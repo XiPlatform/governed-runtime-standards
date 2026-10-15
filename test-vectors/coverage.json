@@ -1,0 +1,689 @@
+{
+  "title": "Approval coverage",
+  "specs": [
+    "action-approval/1.0"
+  ],
+  "generator": "governed-runtime 1.0.0 reference implementation, scripts/generate-test-vectors.mjs",
+  "notes": [
+    "Each case asks whether grants[grant] covers check.proposal, executed now at check.now with correlation check.correlationId (and session check.sessionId, when given), after check.usesSoFar executions under the grant (0 when absent).",
+    "rule is the step of the coverage algorithm that decides the case.",
+    "expected.covered is normative. expected.reason is the reference implementation result code and is informative.",
+    "args and changedArgs show how the single grant's argsDigest and the changed digest in single-args-changed were computed: the SHA-256 digest of the canonical form of the arguments."
+  ],
+  "args": {
+    "approved": {
+      "to": "accounts@northwind.example",
+      "subject": "August aged-receivables reminder",
+      "attachments": [
+        "INV-0419"
+      ]
+    },
+    "approvedDigest": "sha256:86164bfcbe338d5c4fa9b4eb08bf2402224de7a71f87960777e6d8977be5f3d9",
+    "changed": {
+      "to": "accounts@northwind-payments.example",
+      "subject": "August aged-receivables reminder",
+      "attachments": [
+        "INV-0419"
+      ]
+    },
+    "changedDigest": "sha256:ad790420e4915d2150d2aecf33ccdb2f1eb20ebc8aa97d3676abe46f31e701be"
+  },
+  "grants": {
+    "single": {
+      "spec": "action-approval/1.0",
+      "id": "att_01J9X3PZ9C4D6E8F0G2H4J6K8M",
+      "correlationId": "corr_01J9X3Q0Z8K7M2N5P4R6S7T8V9",
+      "proposal": {
+        "kind": "tool_call",
+        "tool": "outlook.send_email",
+        "target": "microsoft-outlook",
+        "effect": "write",
+        "argsDigest": "sha256:86164bfcbe338d5c4fa9b4eb08bf2402224de7a71f87960777e6d8977be5f3d9",
+        "summary": "Send the August aged-receivables reminder to accounts@northwind.example (1 attachment, INV-0419)"
+      },
+      "principal": {
+        "id": "user_2f9a",
+        "type": "human",
+        "display": "Sarah Chen",
+        "tenant": "org_acme"
+      },
+      "approver": {
+        "id": "user_2f9a",
+        "type": "human",
+        "display": "Sarah Chen",
+        "tenant": "org_acme"
+      },
+      "decision": "approved",
+      "scope": "single",
+      "decidedAt": "2026-09-02T03:12:38.640Z",
+      "method": "ui",
+      "policy": {
+        "ref": "pol_finance_outbound_email",
+        "version": "3"
+      }
+    },
+    "standing": {
+      "spec": "action-approval/1.0",
+      "id": "att_01J9X4A0B2C4D6E8F0G2H4J6K8",
+      "correlationId": "sess_7c2e",
+      "proposal": {
+        "kind": "tool_call",
+        "tool": "xero.create_invoice_draft",
+        "target": "xero",
+        "effect": "write",
+        "argsDigest": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+        "summary": "Always allow this agent to create draft invoices in Xero for this session"
+      },
+      "principal": {
+        "id": "user_2f9a",
+        "type": "human",
+        "tenant": "org_acme"
+      },
+      "approver": {
+        "id": "user_2f9a",
+        "type": "human",
+        "display": "Sarah Chen",
+        "tenant": "org_acme"
+      },
+      "decision": "approved",
+      "scope": "standing",
+      "constraints": {
+        "matchOn": [
+          "tool",
+          "target",
+          "effect"
+        ],
+        "expiresAt": "2026-09-02T11:12:38.640Z",
+        "maxUses": 50,
+        "conditions": [
+          "drafts only; publishing an invoice still requires single approval"
+        ]
+      },
+      "decidedAt": "2026-09-02T03:12:38.640Z",
+      "method": "ui",
+      "policy": {
+        "ref": "pol_finance_xero_drafts",
+        "version": "2"
+      },
+      "reason": "Month-end run: batch of draft invoices for review"
+    },
+    "session": {
+      "spec": "action-approval/1.0",
+      "id": "att_session_example",
+      "correlationId": "sess_7c2e",
+      "proposal": {
+        "kind": "tool_call",
+        "tool": "jira.add_comment",
+        "target": "jira",
+        "effect": "write",
+        "argsDigest": "sha256:4444444444444444444444444444444444444444444444444444444444444444"
+      },
+      "principal": {
+        "id": "user_2f9a",
+        "type": "human"
+      },
+      "approver": {
+        "id": "user_2f9a",
+        "type": "human"
+      },
+      "decision": "approved",
+      "scope": "session",
+      "constraints": {
+        "matchOn": [
+          "tool",
+          "effect"
+        ]
+      },
+      "decidedAt": "2026-09-02T03:00:00.000Z",
+      "method": "ui"
+    },
+    "rejected": {
+      "spec": "action-approval/1.0",
+      "id": "att_rejected_example",
+      "correlationId": "corr_01J9X3Q0Z8K7M2N5P4R6S7T8V9",
+      "proposal": {
+        "kind": "tool_call",
+        "tool": "outlook.send_email",
+        "target": "microsoft-outlook",
+        "effect": "write",
+        "argsDigest": "sha256:86164bfcbe338d5c4fa9b4eb08bf2402224de7a71f87960777e6d8977be5f3d9",
+        "summary": "Send the August aged-receivables reminder to accounts@northwind.example (1 attachment, INV-0419)"
+      },
+      "principal": {
+        "id": "user_2f9a",
+        "type": "human",
+        "display": "Sarah Chen",
+        "tenant": "org_acme"
+      },
+      "approver": {
+        "id": "user_2f9a",
+        "type": "human",
+        "display": "Sarah Chen",
+        "tenant": "org_acme"
+      },
+      "decision": "rejected",
+      "scope": "single",
+      "decidedAt": "2026-09-02T03:12:38.640Z",
+      "method": "ui",
+      "policy": {
+        "ref": "pol_finance_outbound_email",
+        "version": "3"
+      }
+    },
+    "revoked": {
+      "spec": "action-approval/1.0",
+      "id": "att_revoked_example",
+      "correlationId": "sess_7c2e",
+      "proposal": {
+        "kind": "tool_call",
+        "tool": "xero.create_invoice_draft",
+        "target": "xero",
+        "effect": "write",
+        "argsDigest": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+        "summary": "Always allow this agent to create draft invoices in Xero for this session"
+      },
+      "principal": {
+        "id": "user_2f9a",
+        "type": "human",
+        "tenant": "org_acme"
+      },
+      "approver": {
+        "id": "user_2f9a",
+        "type": "human",
+        "display": "Sarah Chen",
+        "tenant": "org_acme"
+      },
+      "decision": "approved",
+      "scope": "standing",
+      "constraints": {
+        "matchOn": [
+          "tool",
+          "target",
+          "effect"
+        ],
+        "expiresAt": "2026-09-02T11:12:38.640Z",
+        "maxUses": 50,
+        "conditions": [
+          "drafts only; publishing an invoice still requires single approval"
+        ]
+      },
+      "decidedAt": "2026-09-02T03:12:38.640Z",
+      "method": "ui",
+      "policy": {
+        "ref": "pol_finance_xero_drafts",
+        "version": "2"
+      },
+      "reason": "Month-end run: batch of draft invoices for review",
+      "revoked": {
+        "at": "2026-09-02T05:00:00.000Z",
+        "by": {
+          "id": "user_2f9a",
+          "type": "human"
+        },
+        "reason": "run finished early"
+      }
+    },
+    "auto": {
+      "spec": "action-approval/1.0",
+      "id": "att_auto_example",
+      "correlationId": "corr_auto",
+      "proposal": {
+        "kind": "tool_call",
+        "tool": "calendar.create_hold",
+        "target": "microsoft-outlook",
+        "effect": "write",
+        "argsDigest": "sha256:5555555555555555555555555555555555555555555555555555555555555555"
+      },
+      "principal": {
+        "id": "user_2f9a",
+        "type": "human"
+      },
+      "approver": {
+        "id": "policy-engine",
+        "type": "service"
+      },
+      "decision": "auto",
+      "scope": "standing",
+      "constraints": {
+        "matchOn": [
+          "tool",
+          "target",
+          "effect"
+        ],
+        "maxUses": 3
+      },
+      "decidedAt": "2026-09-02T03:00:00.000Z",
+      "method": "policy",
+      "policy": {
+        "ref": "pol_calendar_holds",
+        "version": "1"
+      }
+    }
+  },
+  "cases": [
+    {
+      "name": "single-exact",
+      "description": "The exact approved arguments in the approved correlation.",
+      "grant": "single",
+      "rule": 6,
+      "check": {
+        "proposal": {
+          "kind": "tool_call",
+          "tool": "outlook.send_email",
+          "target": "microsoft-outlook",
+          "effect": "write",
+          "argsDigest": "sha256:86164bfcbe338d5c4fa9b4eb08bf2402224de7a71f87960777e6d8977be5f3d9",
+          "summary": "Send the August aged-receivables reminder to accounts@northwind.example (1 attachment, INV-0419)"
+        },
+        "correlationId": "corr_01J9X3Q0Z8K7M2N5P4R6S7T8V9",
+        "now": "2026-09-02T04:00:00.000Z"
+      },
+      "expected": {
+        "covered": true
+      }
+    },
+    {
+      "name": "single-args-changed",
+      "description": "Approve X, execute Y: the recipient changed after approval, so the arguments digest differs.",
+      "grant": "single",
+      "rule": 6,
+      "check": {
+        "proposal": {
+          "kind": "tool_call",
+          "tool": "outlook.send_email",
+          "target": "microsoft-outlook",
+          "effect": "write",
+          "argsDigest": "sha256:ad790420e4915d2150d2aecf33ccdb2f1eb20ebc8aa97d3676abe46f31e701be",
+          "summary": "Send the August aged-receivables reminder to accounts@northwind.example (1 attachment, INV-0419)"
+        },
+        "correlationId": "corr_01J9X3Q0Z8K7M2N5P4R6S7T8V9",
+        "now": "2026-09-02T04:00:00.000Z"
+      },
+      "expected": {
+        "covered": false,
+        "reason": "args_mismatch"
+      }
+    },
+    {
+      "name": "single-other-correlation",
+      "description": "The same arguments in a different action.",
+      "grant": "single",
+      "rule": 6,
+      "check": {
+        "proposal": {
+          "kind": "tool_call",
+          "tool": "outlook.send_email",
+          "target": "microsoft-outlook",
+          "effect": "write",
+          "argsDigest": "sha256:86164bfcbe338d5c4fa9b4eb08bf2402224de7a71f87960777e6d8977be5f3d9",
+          "summary": "Send the August aged-receivables reminder to accounts@northwind.example (1 attachment, INV-0419)"
+        },
+        "correlationId": "corr_other",
+        "now": "2026-09-02T04:00:00.000Z"
+      },
+      "expected": {
+        "covered": false,
+        "reason": "correlation_mismatch"
+      }
+    },
+    {
+      "name": "single-effect-mismatch",
+      "description": "The proposal effect differs from the approved effect.",
+      "grant": "single",
+      "rule": 5,
+      "check": {
+        "proposal": {
+          "kind": "tool_call",
+          "tool": "outlook.send_email",
+          "target": "microsoft-outlook",
+          "effect": "read",
+          "argsDigest": "sha256:86164bfcbe338d5c4fa9b4eb08bf2402224de7a71f87960777e6d8977be5f3d9",
+          "summary": "Send the August aged-receivables reminder to accounts@northwind.example (1 attachment, INV-0419)"
+        },
+        "correlationId": "corr_01J9X3Q0Z8K7M2N5P4R6S7T8V9",
+        "now": "2026-09-02T04:00:00.000Z"
+      },
+      "expected": {
+        "covered": false,
+        "reason": "effect_mismatch"
+      }
+    },
+    {
+      "name": "rejected",
+      "description": "A rejected decision never covers anything.",
+      "grant": "rejected",
+      "rule": 1,
+      "check": {
+        "proposal": {
+          "kind": "tool_call",
+          "tool": "outlook.send_email",
+          "target": "microsoft-outlook",
+          "effect": "write",
+          "argsDigest": "sha256:86164bfcbe338d5c4fa9b4eb08bf2402224de7a71f87960777e6d8977be5f3d9",
+          "summary": "Send the August aged-receivables reminder to accounts@northwind.example (1 attachment, INV-0419)"
+        },
+        "correlationId": "corr_01J9X3Q0Z8K7M2N5P4R6S7T8V9",
+        "now": "2026-09-02T04:00:00.000Z"
+      },
+      "expected": {
+        "covered": false,
+        "reason": "not_approved"
+      }
+    },
+    {
+      "name": "revoked",
+      "description": "A revoked grant stops covering immediately.",
+      "grant": "revoked",
+      "rule": 2,
+      "check": {
+        "proposal": {
+          "kind": "tool_call",
+          "tool": "xero.create_invoice_draft",
+          "target": "xero",
+          "effect": "write",
+          "argsDigest": "sha256:9999999999999999999999999999999999999999999999999999999999999999"
+        },
+        "correlationId": "corr_new",
+        "now": "2026-09-02T04:00:00.000Z"
+      },
+      "expected": {
+        "covered": false,
+        "reason": "revoked"
+      }
+    },
+    {
+      "name": "standing-other-arguments",
+      "description": "A standing grant does not match arguments; it matches the members named in matchOn.",
+      "grant": "standing",
+      "rule": 7,
+      "check": {
+        "proposal": {
+          "kind": "tool_call",
+          "tool": "xero.create_invoice_draft",
+          "target": "xero",
+          "effect": "write",
+          "argsDigest": "sha256:9999999999999999999999999999999999999999999999999999999999999999"
+        },
+        "correlationId": "corr_new",
+        "now": "2026-09-02T04:00:00.000Z"
+      },
+      "expected": {
+        "covered": true
+      }
+    },
+    {
+      "name": "standing-tool-mismatch",
+      "description": "A different tool on the same target.",
+      "grant": "standing",
+      "rule": 7,
+      "check": {
+        "proposal": {
+          "kind": "tool_call",
+          "tool": "xero.publish_invoice",
+          "target": "xero",
+          "effect": "write",
+          "argsDigest": "sha256:9999999999999999999999999999999999999999999999999999999999999999"
+        },
+        "correlationId": "corr_new",
+        "now": "2026-09-02T04:00:00.000Z"
+      },
+      "expected": {
+        "covered": false,
+        "reason": "mismatch:tool"
+      }
+    },
+    {
+      "name": "standing-target-mismatch",
+      "description": "The same tool name against a different target system.",
+      "grant": "standing",
+      "rule": 7,
+      "check": {
+        "proposal": {
+          "kind": "tool_call",
+          "tool": "xero.create_invoice_draft",
+          "target": "quickbooks",
+          "effect": "write",
+          "argsDigest": "sha256:9999999999999999999999999999999999999999999999999999999999999999"
+        },
+        "correlationId": "corr_new",
+        "now": "2026-09-02T04:00:00.000Z"
+      },
+      "expected": {
+        "covered": false,
+        "reason": "mismatch:target"
+      }
+    },
+    {
+      "name": "standing-before-expiry",
+      "description": "One millisecond before expiresAt.",
+      "grant": "standing",
+      "rule": 3,
+      "check": {
+        "proposal": {
+          "kind": "tool_call",
+          "tool": "xero.create_invoice_draft",
+          "target": "xero",
+          "effect": "write",
+          "argsDigest": "sha256:9999999999999999999999999999999999999999999999999999999999999999"
+        },
+        "correlationId": "corr_new",
+        "now": "2026-09-02T11:12:38.639Z"
+      },
+      "expected": {
+        "covered": true
+      }
+    },
+    {
+      "name": "standing-at-expiry",
+      "description": "At exactly expiresAt: expiresAt must be later than now, so the grant no longer covers.",
+      "grant": "standing",
+      "rule": 3,
+      "check": {
+        "proposal": {
+          "kind": "tool_call",
+          "tool": "xero.create_invoice_draft",
+          "target": "xero",
+          "effect": "write",
+          "argsDigest": "sha256:9999999999999999999999999999999999999999999999999999999999999999"
+        },
+        "correlationId": "corr_new",
+        "now": "2026-09-02T11:12:38.640Z"
+      },
+      "expected": {
+        "covered": false,
+        "reason": "expired"
+      }
+    },
+    {
+      "name": "standing-after-expiry",
+      "description": "After expiresAt.",
+      "grant": "standing",
+      "rule": 3,
+      "check": {
+        "proposal": {
+          "kind": "tool_call",
+          "tool": "xero.create_invoice_draft",
+          "target": "xero",
+          "effect": "write",
+          "argsDigest": "sha256:9999999999999999999999999999999999999999999999999999999999999999"
+        },
+        "correlationId": "corr_new",
+        "now": "2026-09-03T00:00:00.000Z"
+      },
+      "expected": {
+        "covered": false,
+        "reason": "expired"
+      }
+    },
+    {
+      "name": "standing-last-use",
+      "description": "maxUses is 50 and 49 executions have been made.",
+      "grant": "standing",
+      "rule": 4,
+      "check": {
+        "proposal": {
+          "kind": "tool_call",
+          "tool": "xero.create_invoice_draft",
+          "target": "xero",
+          "effect": "write",
+          "argsDigest": "sha256:9999999999999999999999999999999999999999999999999999999999999999"
+        },
+        "correlationId": "corr_new",
+        "now": "2026-09-02T04:00:00.000Z",
+        "usesSoFar": 49
+      },
+      "expected": {
+        "covered": true
+      }
+    },
+    {
+      "name": "standing-exhausted",
+      "description": "maxUses is 50 and 50 executions have been made.",
+      "grant": "standing",
+      "rule": 4,
+      "check": {
+        "proposal": {
+          "kind": "tool_call",
+          "tool": "xero.create_invoice_draft",
+          "target": "xero",
+          "effect": "write",
+          "argsDigest": "sha256:9999999999999999999999999999999999999999999999999999999999999999"
+        },
+        "correlationId": "corr_new",
+        "now": "2026-09-02T04:00:00.000Z",
+        "usesSoFar": 50
+      },
+      "expected": {
+        "covered": false,
+        "reason": "exhausted"
+      }
+    },
+    {
+      "name": "session-same-correlation",
+      "description": "A session grant used with its own correlation.",
+      "grant": "session",
+      "rule": 7,
+      "check": {
+        "proposal": {
+          "kind": "tool_call",
+          "tool": "jira.add_comment",
+          "target": "jira",
+          "effect": "write",
+          "argsDigest": "sha256:6666666666666666666666666666666666666666666666666666666666666666"
+        },
+        "correlationId": "sess_7c2e",
+        "now": "2026-09-02T04:00:00.000Z"
+      },
+      "expected": {
+        "covered": true
+      }
+    },
+    {
+      "name": "session-same-session",
+      "description": "A session grant used by another action in the same session.",
+      "grant": "session",
+      "rule": 7,
+      "check": {
+        "proposal": {
+          "kind": "tool_call",
+          "tool": "jira.add_comment",
+          "target": "jira",
+          "effect": "write",
+          "argsDigest": "sha256:6666666666666666666666666666666666666666666666666666666666666666"
+        },
+        "correlationId": "corr_in_session",
+        "sessionId": "sess_7c2e",
+        "now": "2026-09-02T04:00:00.000Z"
+      },
+      "expected": {
+        "covered": true
+      }
+    },
+    {
+      "name": "session-other-session",
+      "description": "A session grant presented in a different session.",
+      "grant": "session",
+      "rule": 7,
+      "check": {
+        "proposal": {
+          "kind": "tool_call",
+          "tool": "jira.add_comment",
+          "target": "jira",
+          "effect": "write",
+          "argsDigest": "sha256:6666666666666666666666666666666666666666666666666666666666666666"
+        },
+        "correlationId": "corr_elsewhere",
+        "sessionId": "sess_9d41",
+        "now": "2026-09-02T04:00:00.000Z"
+      },
+      "expected": {
+        "covered": false,
+        "reason": "session_mismatch"
+      }
+    },
+    {
+      "name": "session-target-not-matched",
+      "description": "matchOn names tool and effect only, so a different target is still covered.",
+      "grant": "session",
+      "rule": 7,
+      "check": {
+        "proposal": {
+          "kind": "tool_call",
+          "tool": "jira.add_comment",
+          "target": "jira-cloud-2",
+          "effect": "write",
+          "argsDigest": "sha256:6666666666666666666666666666666666666666666666666666666666666666"
+        },
+        "correlationId": "corr_in_session",
+        "sessionId": "sess_7c2e",
+        "now": "2026-09-02T04:00:00.000Z"
+      },
+      "expected": {
+        "covered": true
+      }
+    },
+    {
+      "name": "auto-within-limit",
+      "description": "A policy-granted auto grant within its use limit.",
+      "grant": "auto",
+      "rule": 4,
+      "check": {
+        "proposal": {
+          "kind": "tool_call",
+          "tool": "calendar.create_hold",
+          "target": "microsoft-outlook",
+          "effect": "write",
+          "argsDigest": "sha256:7777777777777777777777777777777777777777777777777777777777777777"
+        },
+        "correlationId": "corr_any",
+        "now": "2026-09-02T04:00:00.000Z",
+        "usesSoFar": 2
+      },
+      "expected": {
+        "covered": true
+      }
+    },
+    {
+      "name": "auto-exhausted",
+      "description": "A policy-granted auto grant at its use limit.",
+      "grant": "auto",
+      "rule": 4,
+      "check": {
+        "proposal": {
+          "kind": "tool_call",
+          "tool": "calendar.create_hold",
+          "target": "microsoft-outlook",
+          "effect": "write",
+          "argsDigest": "sha256:7777777777777777777777777777777777777777777777777777777777777777"
+        },
+        "correlationId": "corr_any",
+        "now": "2026-09-02T04:00:00.000Z",
+        "usesSoFar": 3
+      },
+      "expected": {
+        "covered": false,
+        "reason": "exhausted"
+      }
+    }
+  ]
+}
